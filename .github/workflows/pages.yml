@@ -1,0 +1,48 @@
+name: Publish DEDAK website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'godaddy/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare portable website
+        run: |
+          cp -R godaddy _site
+          python3 - <<'PY'
+          from pathlib import Path
+          base = 'https://bilgihazirlik15-maker.github.io/dedak/'
+          for name in ['sitemap.xml', 'robots.txt']:
+              path = Path('_site') / name
+              path.write_text(path.read_text().replace('https://www.dedak.org/', base))
+          path = Path('_site/404.html')
+          path.write_text(path.read_text().replace('<head>', '<head><base href="/dedak/">', 1))
+          PY
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4
