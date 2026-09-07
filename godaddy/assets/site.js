@@ -1,8 +1,9 @@
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
 function closeMenu(){navigation?.classList.remove('open');menuButton?.setAttribute('aria-expanded','false');}
-function closeSubmenus(except){document.querySelectorAll('.submenu-toggle').forEach(button=>{if(button===except)return;button.setAttribute('aria-expanded','false');document.getElementById(button.getAttribute('aria-controls')).hidden=true;});}
-document.querySelectorAll('.submenu-toggle').forEach(button=>button.addEventListener('click',()=>{const panel=document.getElementById(button.getAttribute('aria-controls'));const open=panel.hidden;closeSubmenus(button);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));}));
+function syncSubmenuState(){navigation?.classList.toggle('submenu-open',Boolean(document.querySelector('.submenu-toggle[aria-expanded="true"]')));}
+function closeSubmenus(except){document.querySelectorAll('.submenu-toggle').forEach(button=>{if(button===except)return;button.setAttribute('aria-expanded','false');document.getElementById(button.getAttribute('aria-controls')).hidden=true;});syncSubmenuState();}
+document.querySelectorAll('.submenu-toggle').forEach(button=>button.addEventListener('click',()=>{const panel=document.getElementById(button.getAttribute('aria-controls'));const open=panel.hidden;closeSubmenus(button);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));syncSubmenuState();}));
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){const button=document.querySelector('.submenu-toggle[aria-expanded="true"]');if(button){closeSubmenus();button.focus();}else if(navigation?.classList.contains('open')){closeMenu();menuButton.focus();}}});
 document.addEventListener('click',event=>{if(!event.target.closest('.nav-group'))closeSubmenus();});
 menuButton?.addEventListener('click',()=>{const open=navigation.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));});
