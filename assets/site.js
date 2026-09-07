@@ -1,13 +1,20 @@
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
+let directNavigationTimer;
 function clearPendingNavigation(){navigation?.classList.remove('direct-link-pending');navigation?.querySelectorAll('.is-pending').forEach(link=>link.classList.remove('is-pending'));}
 function markPendingNavigation(link){clearPendingNavigation();navigation?.classList.add('direct-link-pending');link.classList.add('is-pending');}
 navigation?.querySelectorAll(':scope > a[href]').forEach(link=>{
   link.addEventListener('pointerdown',()=>markPendingNavigation(link));
   link.addEventListener('pointercancel',clearPendingNavigation);
-  link.addEventListener('click',()=>markPendingNavigation(link));
+  link.addEventListener('click',event=>{
+    if(event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+    event.preventDefault();
+    markPendingNavigation(link);
+    clearTimeout(directNavigationTimer);
+    directNavigationTimer=setTimeout(()=>window.location.assign(link.href),80);
+  });
 });
-window.addEventListener('pageshow',clearPendingNavigation);
+window.addEventListener('pageshow',()=>{clearTimeout(directNavigationTimer);clearPendingNavigation();});
 function closeMenu(){navigation?.classList.remove('open');menuButton?.setAttribute('aria-expanded','false');}
 function syncSubmenuState(){navigation?.classList.toggle('submenu-open',Boolean(document.querySelector('.submenu-toggle[aria-expanded="true"]')));}
 function closeSubmenus(except){document.querySelectorAll('.submenu-toggle').forEach(button=>{if(button===except)return;button.setAttribute('aria-expanded','false');document.getElementById(button.getAttribute('aria-controls')).hidden=true;});syncSubmenuState();}
