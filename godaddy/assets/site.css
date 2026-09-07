@@ -14,3 +14,37 @@
 .language-switch a:focus-visible{outline-offset:2px}
 @media(max-width:640px){.language-bar{margin-bottom:8px}.language-switch a{min-height:38px;padding:7px 12px}.language-name{display:none}}
 @media(prefers-reduced-motion:reduce){.language-switch a{transition:none}}
+
+/* Locale-independent geometry: translated text cannot resize the page chrome. */
+html{scrollbar-gutter:stable}
+@supports not (scrollbar-gutter:stable){html{overflow-y:scroll}}
+.language-switch{width:280px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.language-switch a{min-width:0}
+.page-title{min-height:76.16px}
+@media screen and (min-width:641px){
+  .header-inner{display:grid;grid-template-columns:214px minmax(0,1fr);gap:24px;min-height:96px}
+  .brand img{width:214px;height:83px}
+  .nav{display:grid;grid-template-columns:.8fr .85fr 1.25fr 1fr .95fr 1.65fr 1.15fr .75fr;width:100%;min-width:0;align-items:stretch;font-size:.96rem;line-height:1.25}
+  .nav>a,.nav-group>a{justify-content:center;text-align:center;white-space:normal;overflow-wrap:anywhere;padding:8px 6px;min-width:0;min-height:72px}
+  .nav-group{display:grid;grid-template-columns:minmax(0,1fr) 20px;min-width:0;position:relative;align-items:stretch}
+  .nav-group>.submenu-toggle{min-width:0;padding:4px;min-height:72px}
+  .nav-group:last-child{grid-template-columns:minmax(0,1fr)}
+  .nav-group>.more-toggle{width:100%;padding:8px 6px;font-size:.96rem;line-height:1.25;white-space:normal}
+}
+@media screen and (min-width:641px) and (max-width:1180px){
+  .header-inner{grid-template-columns:minmax(0,1fr);gap:16px}
+  .nav{font-size:.96rem}
+}
+@media screen and (max-width:640px){
+  .language-switch{width:156px}
+  .header-inner{display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:12px;min-height:75px}
+  .brand{min-width:0}
+  .brand img{width:min(190px,100%);height:74px}
+  .menu-toggle{width:100px;white-space:nowrap}
+  .nav.open{display:block}
+  .nav>a,.nav-group>a{white-space:normal;overflow-wrap:anywhere}
+  .page-title{min-height:104.16px}
+}
+@media screen and (min-width:641px) and (max-width:900px){
+  .nav{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:72px}
+}

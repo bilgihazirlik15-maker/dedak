@@ -36,6 +36,15 @@ for doc in (OUT/'documents').iterdir():
     raw=doc.read_bytes()
     if doc.suffix=='.pdf' and not raw.startswith(b'%PDF'):errors.append('Invalid PDF '+doc.name)
     if doc.suffix in ['.docx','.pptx'] and not zipfile.is_zipfile(doc):errors.append('Invalid Office document '+doc.name)
+for path in OUT.glob('*.html'):
+    tr=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+    en=BeautifulSoup((OUT/'en'/path.name).read_text(encoding='utf-8'),'html.parser')
+    # Navigation must keep exactly the same element slots in both languages.
+    def header_shape(soup):
+        return [(el.name,tuple(el.get('class',[]))) for el in soup.select('.header-inner *')]
+    if header_shape(tr)!=header_shape(en):errors.append(f'{path.name}: different localized header structure')
+    for selector in ['.announcement-banner','.notice','.contact-grid','.page-cards','details','form']:
+        if len(tr.select(selector))!=len(en.select(selector)):errors.append(f'{path.name}: different layout sections: {selector}')
 report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['Browser visual/interaction QA','GoDaddy server configuration','External article availability','Email client handoff']}
 (ROOT/'content/validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))
