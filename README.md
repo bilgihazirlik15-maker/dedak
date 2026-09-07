@@ -6,7 +6,7 @@ Canlı adres: **https://bilgihazirlik15-maker.github.io/dedak/**
 
 `main` dalındaki `godaddy` klasörü güncellendiğinde GitHub Pages otomatik olarak yeniden yayınlanır.
 
-DEDAK web sitesinin orijinal tasarımına yakın, mobil ekranlara uyarlanmış Türkçe ve İngilizce sürümü. Beyaz zemin, mevcut logo, gri yatay menü ve lacivert duyuru alanı korunmuştur. Sol üstteki bayraklı TR/EN anahtarı aynı sayfanın diğer dildeki sürümünü açar.
+DEDAK web sitesinin orijinal tasarımına yakın, mobil ekranlara uyarlanmış Türkçe ve İngilizce sürümü. Beyaz zemin, mevcut logo, gri yatay menü ve lacivert duyuru alanı korunmuştur. Sağ üstteki bayraklı TR/EN anahtarı aynı sayfanın diğer dildeki sürümünü açar.
 
 ## Kullanım
 
