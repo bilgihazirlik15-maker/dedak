@@ -49,9 +49,6 @@ html{scrollbar-gutter:stable}
 }
 .section-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border:0;background:transparent;color:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;text-align:center;white-space:normal}
 .section-toggle[aria-current="true"]{background:#333;color:#fff}
-.section-toggle .menu-caret{flex:0 0 auto;font-size:1rem;transition:transform .18s ease}
-.section-toggle[aria-expanded="true"] .menu-caret{transform:rotate(180deg)}
 @media screen and (max-width:640px){
-  .nav-group>.section-toggle{justify-content:space-between;width:100%;padding:15.6px 19.2px;border-left:0;text-align:left}
+  .nav-group>.section-toggle{justify-content:flex-start;width:100%;padding:15.6px 19.2px;border-left:0;text-align:left}
 }
-@media(prefers-reduced-motion:reduce){.section-toggle .menu-caret{transition:none}}

@@ -6,7 +6,7 @@ import json,re
 
 SOURCE_MAP={'about-3':'about-3-2','tuzuk':'about-3'}
 UI={
- 'Anasayfa':'Home','Ana Sayfa':'Home','Hakkında':'About','Kurumsal':'About DEDAK','Akreditasyon':'Accreditation','Üyelik':'Membership','Belgeler':'Documents','Sunumlar ve Yayınlar':'Presentations and Publications','Duyurular':'Announcements','Diğer ⌄':'More ⌄','Galeri':'Gallery','İletişim':'Contact','Site haritası':'Site map','Menü ☰':'Menu ☰','İçeriğe geç':'Skip to content','Ana menü':'Main navigation','DEDAK ana sayfa':'DEDAK home',
+ 'Anasayfa':'Home','Ana Sayfa':'Home','Hakkında':'About','Kurumsal':'About DEDAK','Akreditasyon':'Accreditation','Üyelik':'Membership','Belgeler':'Documents','Sunumlar ve Yayınlar':'Presentations and Publications','Duyurular':'Announcements','Diğer':'More','Galeri':'Gallery','İletişim':'Contact','Site haritası':'Site map','Menü ☰':'Menu ☰','İçeriğe geç':'Skip to content','Ana menü':'Main navigation','DEDAK ana sayfa':'DEDAK home',
  'DEDAK Akreditasyon Başvuruları':'DEDAK Accreditation Applications','DEDAK akreditasyon başvuruları':'DEDAK accreditation applications','2027 akreditasyon dönemi':'2027 accreditation cycle','Başvuru rehberini inceleyin ↗':'Read the application guide ↗','Kurumsal belge':'Institutional document','Akreditasyon için temel belgeler':'Essential accreditation documents',
  'DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.':'DEDAK’s foundation, governance, approach to quality and strategic objectives.',
  'Akreditasyon çalışmalarında kullanılan belgeler, kurumsal düzenlemeler ve başvuru formları.':'Documents, institutional regulations and application forms used in the accreditation process.',
