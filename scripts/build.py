@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
+ASSET_VERSION='20260907-1'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -53,7 +54,7 @@ def header(active):
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">e-mail: info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
 def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, değerlendirme ölçütleri, başvuru bilgileri ve kurumsal belgeler.'):
-    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102d4c"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head><body>{header(active)}{body}{footer()}</body></html>'
+    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102d4c"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script></head><body>{header(active)}{body}{footer()}</body></html>'
 def homepage():
     text=clean_content(by_slug['duyurular'])
     return '<main id="main" class="wrap home"><section class="announcement-banner" aria-labelledby="announcement-title"><h1 id="announcement-title"><a href="duyurular.html">DEDAK Akreditasyon Başvuruları</a></h1></section><article class="prose home-announcement">'+text+resources(by_slug['akreditasyon-başvurusu'])+'</article></main>'

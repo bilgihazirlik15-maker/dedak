@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import json,zipfile
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy'
-errors=[]; count=0; external=set()
+errors=[]; count=0; external=set(); menu_signatures={}
 for path in OUT.rglob('*.html'):
     soup=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     language='en' if path.parent.name=='en' else 'tr'
@@ -16,6 +16,14 @@ for path in OUT.rglob('*.html'):
         actual=(path.parent/a['href']).resolve()
         if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')
     if len(soup.select('.language-switch [aria-current="true"]'))!=1:errors.append(f'{path}: invalid active language')
+    nav=soup.select_one('#navigation')
+    if not nav:errors.append(f'{path.name}: missing shared navigation')
+    else:
+        normalized=BeautifulSoup(str(nav),'html.parser')
+        for node in normalized.select('[aria-current]'):del node['aria-current']
+        signature=str(normalized)
+        if language not in menu_signatures:menu_signatures[language]=signature
+        elif signature!=menu_signatures[language]:errors.append(f'{path.name}: inconsistent shared navigation')
     for group in soup.select('.nav-group'):
         toggle=group.find('button',class_='submenu-toggle',recursive=False)
         panel=group.find(class_='submenu',recursive=False)
@@ -23,6 +31,9 @@ for path in OUT.rglob('*.html'):
         elif toggle.get('aria-controls')!=panel.get('id'):errors.append(f'{path.name}: dropdown control mismatch')
         if group.find('a',recursive=False):errors.append(f'{path.name}: dropdown heading must not navigate')
         if '⌄' in group.get_text() or group.select_one('.menu-caret'):errors.append(f'{path.name}: dropdown arrow must not be visible')
+    stylesheet=soup.select_one('link[rel="stylesheet"]');script=soup.select_one('script[src]')
+    if not stylesheet or '?v=' not in stylesheet.get('href',''):errors.append(f'{path.name}: unversioned stylesheet')
+    if not script or '?v=' not in script.get('src',''):errors.append(f'{path.name}: unversioned menu script')
     if not soup.title or len(soup.select('h1'))!=1:errors.append(f'{path.name}: invalid title/h1')
     ids=[e['id'] for e in soup.select('[id]')]
     if len(ids)!=len(set(ids)):errors.append(f'{path.name}: duplicate ids')
@@ -52,7 +63,7 @@ for path in OUT.glob('*.html'):
     if header_shape(tr)!=header_shape(en):errors.append(f'{path.name}: different localized header structure')
     for selector in ['.announcement-banner','.notice','.contact-grid','.page-cards','details','form']:
         if len(tr.select(selector))!=len(en.select(selector)):errors.append(f'{path.name}: different layout sections: {selector}')
-report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['Browser visual/interaction QA','GoDaddy server configuration','External article availability','Email client handoff']}
+report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one shared menu per language','dropdown headings and panels','no dropdown arrows','versioned menu assets','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['GoDaddy server configuration','External article availability','Email client handoff']}
 (ROOT/'content/validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))
 if errors:raise SystemExit(1)
