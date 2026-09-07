@@ -1,0 +1,30 @@
+{
+  "pages": 35,
+  "local_references_checked": 1611,
+  "documents": 33,
+  "errors": [],
+  "external_links": [
+    "http://tyyc.yok.gov.tr/",
+    "https://docplayer.biz.tr/10606497-17-18-ekim-2014-erciyes-universitesi-ydyo-yoneticileri-toplantisi-programi-17-ekim-2014-cuma-sabah-oturumlari-turizm-fakultesi-konferans-salonu.html",
+    "https://docplayer.biz.tr/23633044-16-17-ekim-2015-tarihinde-cankaya-universitesin-de-duzenlenen-9-ydyo-yoneticileri-toplanti-tutanaklari-ve-raporu-a-genel-rapor.html",
+    "https://docplayer.biz.tr/7962080-F-a-t-i-h-u-n-i-v-e-r-s-i-t-e-s-i-24-25-ekim-2013-tarihinde-fatih-universitesinde-duzenlenen-7-ydyo-yoneticileri-toplanti-tutanaklari-ve-raporu.html",
+    "https://www.asbu.edu.tr/tr/haber/11-ydy-yoneticileri-toplantisi",
+    "https://www.bandirma.edu.tr/tr/www/Haber/Goster/Universitemizde-Uluslararasi-Yabanci-Dil-Egitiminde-Kalite-Guvencesi-ve-Akreditasyon-Konferansi-Duzenlendi-986",
+    "https://ydyotr.wordpress.com/",
+    "mailto:info@dedak.org"
+  ],
+  "checks": [
+    "Turkish encoding",
+    "one primary heading per page",
+    "unique IDs",
+    "all local links and fragments",
+    "local images/scripts/styles",
+    "PDF/Office file signatures"
+  ],
+  "not_tested": [
+    "Browser visual/interaction QA",
+    "GoDaddy server configuration",
+    "External article availability",
+    "Email client handoff"
+  ]
+}

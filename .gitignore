@@ -1,0 +1,17 @@
+**/node_modules/
+**/dist/
+**/.wrangler/
+**/__pycache__/
+*.log
+.env
+.env.*
+*.pem
+*.key
+/site-source/public/
+/content/*
+!/content/pages.json
+!/content/assets.json
+!/content/navigation.json
+!/content/programs.json
+!/content/committees-table.html
+!/content/validation.json
