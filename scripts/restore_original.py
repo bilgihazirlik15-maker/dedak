@@ -7,17 +7,19 @@ source=path.read_text(encoding='utf-8')
 replacements={
 'header':'''def header(active):
     menu=[('index','Anasayfa',None),('hakkinda','Hakkında','Kurumsal'),('akreditasyon','Akreditasyon','Akreditasyon'),('uyelik','Üyelik',None),('belgeler','Belgeler','Belgeler'),('sunumlar-ve-yayınlar','Sunumlar ve Yayınlar',None),('duyurular','Duyurular',None)]
+    menu_slugs={slug for slug,_,_ in menu}
     entries=[]
     for slug,label,group in menu:
         selected=active==slug
         children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug]
         if children:
             drop=''.join(f'<a href="{url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
-            current=selected or group_for(active)==group
+            current=selected or (active not in menu_slugs and group_for(active)==group)
             entries.append(f'<div class="nav-group"><button class="submenu-toggle section-toggle" aria-label="{label} alt menüsü" aria-expanded="false" aria-controls="submenu-{slug}"'+(' aria-current="true"' if current else '')+f'><span>{label}</span></button><div class="submenu" id="submenu-{slug}" hidden>{drop}</div></div>')
         else:
             entries.append(f'<a href="{url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
-    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more">Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
+    more_current=active in {'galeri','iletisim','site-haritasi'}
+    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more"'+(' aria-current="true"' if more_current else '')+'>Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
     return '<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
 ''',
 'footer':'''def footer():

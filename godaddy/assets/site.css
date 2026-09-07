@@ -48,7 +48,7 @@ html{scrollbar-gutter:stable}
   .nav{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:72px}
 }
 .section-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border:0;background:transparent;color:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;text-align:center;white-space:normal}
-.section-toggle[aria-current="true"]{background:#333;color:#fff}
+.nav .submenu-toggle[aria-current="true"],.nav .submenu-toggle[aria-expanded="true"]{background:#333;color:#fff}
 @media screen and (max-width:640px){
   .nav-group>.section-toggle{justify-content:flex-start;width:100%;padding:15.6px 19.2px;border-left:0;text-align:left}
 }

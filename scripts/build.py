@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260907-1'
+ASSET_VERSION='20260907-2'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -39,17 +39,19 @@ def group_for(s):
     return next((g for g,slugs in groups.items() if s in slugs),'DEDAK')
 def header(active):
     menu=[('index','Anasayfa',None),('hakkinda','Hakkında','Kurumsal'),('akreditasyon','Akreditasyon','Akreditasyon'),('uyelik','Üyelik',None),('belgeler','Belgeler','Belgeler'),('sunumlar-ve-yayınlar','Sunumlar ve Yayınlar',None),('duyurular','Duyurular',None)]
+    menu_slugs={slug for slug,_,_ in menu}
     entries=[]
     for slug,label,group in menu:
         selected=active==slug
         children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug]
         if children:
             drop=''.join(f'<a href="{url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
-            current=selected or group_for(active)==group
+            current=selected or (active not in menu_slugs and group_for(active)==group)
             entries.append(f'<div class="nav-group"><button class="submenu-toggle section-toggle" aria-label="{label} alt menüsü" aria-expanded="false" aria-controls="submenu-{slug}"'+(' aria-current="true"' if current else '')+f'><span>{label}</span></button><div class="submenu" id="submenu-{slug}" hidden>{drop}</div></div>')
         else:
             entries.append(f'<a href="{url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
-    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more">Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
+    more_current=active in {'galeri','iletisim','site-haritasi'}
+    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more"'+(' aria-current="true"' if more_current else '')+'>Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
     return '<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">e-mail: info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
@@ -155,7 +157,7 @@ def build_all():
     sitemap_content='<main id="main" class="wrap section"><span class="eyebrow">DEDAK</span><h1>Site haritası</h1>'
     for g,slugs in groups.items():sitemap_content+=f'<h2>{g}</h2>'+cards(slugs)
     sitemap_content+='</main>'
-    (OUT/'site-haritasi.html').write_text(shell('Site haritası',sitemap_content,''),encoding='utf-8')
+    (OUT/'site-haritasi.html').write_text(shell('Site haritası',sitemap_content,'site-haritasi'),encoding='utf-8')
     notfound='<main class="wrap section" id="main"><span class="eyebrow">404</span><h1>Bu sayfa bulunamadı.</h1><p>Aradığınız içeriğe ana sayfadan veya site haritasından ulaşabilirsiniz.</p><a class="button" href="index.html">Ana sayfaya dön →</a></main>'
     (OUT/'404.html').write_text(shell('Sayfa bulunamadı',notfound,''),encoding='utf-8')
     ht=['# GoDaddy Linux / cPanel Apache hosting','DirectoryIndex index.html','AddDefaultCharset UTF-8','ErrorDocument 404 /404.html','<IfModule mod_rewrite.c>','RewriteEngine On']

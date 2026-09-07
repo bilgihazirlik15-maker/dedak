@@ -18,6 +18,7 @@
     "same-page language switching",
     "one active language",
     "one shared menu per language",
+    "exactly one highlighted menu item",
     "dropdown headings and panels",
     "no dropdown arrows",
     "versioned menu assets",
