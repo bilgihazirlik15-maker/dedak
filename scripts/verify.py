@@ -6,14 +6,16 @@ ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy'
 errors=[]; count=0; external=set(); menu_signatures={}
 for path in OUT.rglob('*.html'):
-    soup=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+    raw_html=path.read_text(encoding='utf-8')
+    if not raw_html.lstrip().lower().startswith('<!doctype html>'):errors.append(f'{path.name}: missing HTML doctype or stray content before document')
+    soup=BeautifulSoup(raw_html,'html.parser')
     language='en' if path.parent.name=='en' else 'tr'
     if soup.html.get('lang')!=language:errors.append(f'{path.name}: incorrect language')
     choices=soup.select('.language-switch a[hreflang]')
     if {a.get('hreflang') for a in choices}!={'tr','en'}:errors.append(f'{path}: missing language choices')
     for a in choices:
         expected=OUT/('en' if a['hreflang']=='en' else '')/path.name
-        actual=(path.parent/a['href']).resolve()
+        actual=(path.parent/unquote(urlsplit(a['href']).path)).resolve()
         if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')
     if len(soup.select('.language-switch [aria-current="true"]'))!=1:errors.append(f'{path}: invalid active language')
     nav=soup.select_one('#navigation')

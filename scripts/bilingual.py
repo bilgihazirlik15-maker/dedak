@@ -2,6 +2,7 @@
 from pathlib import Path
 from urllib.parse import urlsplit,unquote
 from bs4 import BeautifulSoup
+from bs4.element import Doctype
 import json,re
 
 SOURCE_MAP={'about-3':'about-3-2','tuzuk':'about-3'}
@@ -58,6 +59,7 @@ def translate_tree(soup,mapping):
         if stripped in mapping:return text.replace(stripped,mapping[stripped])
         return text.replace('(Başkan Yardımcısı)','(Vice Chair)').replace('(Başkan)','(Chair)').replace(' — büyütmek için görsele tıklayın.',' — click the image to enlarge.').replace(' · İndir',' · Download')
     for node in list(soup.find_all(string=True)):
+        if isinstance(node,Doctype):continue
         if node.parent.name not in ['script','style']:node.replace_with(convert(str(node)))
     for node in soup.find_all(True):
         for attr in ['aria-label','alt','title','placeholder']:
@@ -66,13 +68,13 @@ def translate_tree(soup,mapping):
                 if val.endswith(' alt menüsü'):val=mapping.get(val[:-11],val[:-11])+' submenu'
                 node[attr]=convert(val)
 
-def controls(soup,name,lang):
+def controls(soup,name,lang,version):
     en=lang=='en'; prefix='../' if en else ''
     links=[('tr','Türkçe',prefix+name,'tr'),('en','English',name if en else 'en/'+name,'gb')]
     html='<div class="wrap language-bar"><nav class="language-switch" aria-label="'+('Language' if en else 'Dil seçimi')+'">'
     for code,label,href,flag in links:
         current=' aria-current="true" class="selected"' if code==lang else ''
-        html+=f'<a href="{href}" lang="{code}" hreflang="{code}" aria-label="{label}"{current}><img src="{prefix}assets/flag-{flag}.svg" alt="" width="24" height="16" aria-hidden="true"><span>{"TR" if code=="tr" else "EN"}</span><span class="language-name">{label}</span></a>'
+        html+=f'<a href="{href}?v={version}" lang="{code}" hreflang="{code}" aria-label="{label}"{current}><img src="{prefix}assets/flag-{flag}.svg" alt="" width="24" height="16" aria-hidden="true"><span>{"TR" if code=="tr" else "EN"}</span><span class="language-name">{label}</span></a>'
     html+='</nav></div>'
     soup.select_one('.header').insert(0,BeautifulSoup(html,'html.parser'))
     for code,_,href,_ in links:
@@ -152,7 +154,7 @@ def add_languages(out,b):
             if v.startswith(('assets/','documents/')):el[attr]='../'+v
         for caption in en.select('figcaption'):
             caption.string='Source image — click to enlarge.'
-        controls(tr,name,'tr');controls(en,name,'en')
+        controls(tr,name,'tr',b['ASSET_VERSION']);controls(en,name,'en',b['ASSET_VERSION'])
         path.write_text(str(tr),encoding='utf-8')
         (en_dir/name).write_text(str(en),encoding='utf-8')
     xml=out/'sitemap.xml'
