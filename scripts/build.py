@@ -41,12 +41,13 @@ def header(active):
     entries=[]
     for slug,label,group in menu:
         selected=active==slug
-        link=f'<a href="{url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>'
-        children=[s for s in groups.get(group,[]) if s in by_slug and s!=slug]
+        children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug]
         if children:
             drop=''.join(f'<a href="{url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
-            entries.append(f'<div class="nav-group">{link}<button class="submenu-toggle" aria-label="{label} alt menüsü" aria-expanded="false" aria-controls="submenu-{slug}">⌄</button><div class="submenu" id="submenu-{slug}" hidden>{drop}</div></div>')
-        else:entries.append(link)
+            current=selected or group_for(active)==group
+            entries.append(f'<div class="nav-group"><button class="submenu-toggle section-toggle" aria-label="{label} alt menüsü" aria-expanded="false" aria-controls="submenu-{slug}"'+(' aria-current="true"' if current else '')+f'><span>{label}</span><span class="menu-caret" aria-hidden="true">⌄</span></button><div class="submenu" id="submenu-{slug}" hidden>{drop}</div></div>')
+        else:
+            entries.append(f'<a href="{url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
     entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more">Diğer ⌄</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
     return '<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
 def footer():

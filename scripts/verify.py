@@ -16,6 +16,12 @@ for path in OUT.rglob('*.html'):
         actual=(path.parent/a['href']).resolve()
         if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')
     if len(soup.select('.language-switch [aria-current="true"]'))!=1:errors.append(f'{path}: invalid active language')
+    for group in soup.select('.nav-group'):
+        toggle=group.find('button',class_='submenu-toggle',recursive=False)
+        panel=group.find(class_='submenu',recursive=False)
+        if not toggle or not panel:errors.append(f'{path.name}: invalid dropdown menu structure')
+        elif toggle.get('aria-controls')!=panel.get('id'):errors.append(f'{path.name}: dropdown control mismatch')
+        if group.find('a',recursive=False):errors.append(f'{path.name}: dropdown heading must not navigate')
     if not soup.title or len(soup.select('h1'))!=1:errors.append(f'{path.name}: invalid title/h1')
     ids=[e['id'] for e in soup.select('[id]')]
     if len(ids)!=len(set(ids)):errors.append(f'{path.name}: duplicate ids')
