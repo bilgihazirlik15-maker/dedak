@@ -6,7 +6,7 @@ Canlı adres: **https://bilgihazirlik15-maker.github.io/dedak/**
 
 `main` dalındaki `godaddy` klasörü güncellendiğinde GitHub Pages otomatik olarak yeniden yayınlanır.
 
-DEDAK web sitesinin orijinal tasarımına yakın, mobil ekranlara uyarlanmış Türkçe sürümü. Beyaz zemin, mevcut logo, gri yatay menü ve lacivert duyuru alanı korunmuştur.
+DEDAK web sitesinin orijinal tasarımına yakın, mobil ekranlara uyarlanmış Türkçe ve İngilizce sürümü. Beyaz zemin, mevcut logo, gri yatay menü ve lacivert duyuru alanı korunmuştur. Sol üstteki bayraklı TR/EN anahtarı aynı sayfanın diğer dildeki sürümünü açar.
 
 ## Kullanım
 
@@ -15,7 +15,7 @@ DEDAK web sitesinin orijinal tasarımına yakın, mobil ekranlara uyarlanmış T
 - GoDaddy’ye yüklenebilir paket: [DEDAK-GoDaddy.zip](DEDAK-GoDaddy.zip)
 - Ayrıntılı yönerge: [GoDaddy kurulum rehberi](GODADDY-KURULUM.md)
 
-35 HTML sayfası ve 33 indirilebilir belge içerir. Yayın sürümü veritabanı veya Node.js sunucusu gerektirmez. GoDaddy Web Hosting / cPanel için hazırlanmıştır.
+70 HTML sayfası (her dilde 35) ve 53 indirilebilir belge içerir. İngilizce sayfalar `godaddy/en/` klasöründedir. Yayın sürümü veritabanı veya Node.js sunucusu gerektirmez. GoDaddy Web Hosting / cPanel için hazırlanmıştır.
 
 ## Kaynaklardan üretme
 
@@ -40,7 +40,7 @@ npm run dev
 
 ## İçerik ve sınırlar
 
-- İçerikler [dedak.org](https://www.dedak.org/) sitesinin 7 Eylül 2026 tarihindeki Türkçe içeriğinden aktarılmıştır.
+- İçerikler [dedak.org](https://www.dedak.org/) sitesinin Türkçe ve [İngilizce](https://en.dedak.org/) sürümlerinden aktarılmıştır. İngilizce kaynakta Türkçe kalan metinler çevrilmiştir. Belgeler ve kaynak görseller özgün dillerindedir.
 - İletişim formu e-posta uygulamasında taslak açar; sunucu üzerinden otomatik gönderim yapmaz.
 - Eski galerinin fotoğraflarına erişilemediğinden galeri fotoğrafları dahil değildir.
 - Ücretler, toplantı bilgileri ve akreditasyon geçerlilikleri yayına alınmadan önce kurum tarafından kontrol edilmelidir.

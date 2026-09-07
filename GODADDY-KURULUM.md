@@ -28,11 +28,11 @@ Geliştirici için: tekrar üretilebilir kaynaklar `scripts`, `content`, `assets
 
 ## Teslim notları
 
-- 35 HTML sayfası (33 site sayfası, site haritası ve 404 sayfası), 33 indirilebilir belge, kurum logosu ve mevcut tablo/şema görselleri pakete dahil edildi.
+- 70 HTML sayfası (Türkçe ve İngilizce için 35’er sayfa), 53 indirilebilir belge, kurum logosu ve mevcut tablo/şema görselleri pakete dahil edildi.
 - Kaynak: [DEDAK](https://www.dedak.org/), 7 Eylül 2026 tarihinde incelendi. Kurul listesi kaynak sitedeki herkese açık 2026 tablosundan aktarıldı.
 - İlk arama çıktısında başvuru sayfasının 2026 dönemine ait önbellekli sürümü görünüyordu. Doğrudan site kontrolünde 2027 duyurusu doğrulandı ve yeni sayfalarda bu içerik kullanıldı. Kaynaktaki toplantı başlığı “17 Kasım 2025” yazarken açıklama 17 Kasım 2026 diyordu; yeni sürümde yıl açıklamayla tutarlı hale getirildi. Toplantı bilgisi yayın öncesinde teyit edilmeli.
 - Eski Wix galeri bileşeni fotoğraf içeriği döndürmedi; doğrudan kaynak ve tarayıcı incelemesinde de fotoğraflara erişilemedi. Galeri fotoğrafları pakette yoktur. Galeri sayfasında iletişim yönlendirmesi vardır; fotoğraflar sağlandığında gerçek galeri eklenebilir.
 - İletişim formu otomatik e-posta göndermez. E-posta uygulamasında taslak oluşturur. Gerçek sunucu üzerinden gönderim için sonradan SMTP veya form servisi entegrasyonu gerekir.
 - Kurumsal belgeler ve tablolar kaynak tarihindeki durumlarıyla korunmuştur. Akreditasyon kayıtlarındaki geçmiş dönemler silinmemiştir; Manisa Celal Bayar Üniversitesi’nin iki dönemi ayrı kayıtlardır. Ücretler, program geçerlilikleri ve toplantı bilgileri kurum tarafından yayın öncesinde gözden geçirilmelidir.
-- Bu teslim Türkçe sürümdür. İngilizce içerik aktarımı yapılmadı.
-- Kontrol: 1.611 yerel sayfa/varlık bağlantısı ve belge dosya imzaları doğrulandı; JavaScript sözdizimi ve Sites üretim derlemesi başarılı. Tarayıcıda görsel/etkileşim testi ve gerçek GoDaddy sunucu testi yapılmadı. Ayrıntılar `content/validation.json` dosyasındadır.
+- Sol üstteki bayraklı TR/EN anahtarı aynı sayfanın diğer dildeki sürümüne geçer. İngilizce sayfalar `en` klasöründe yer alır. İçerikler kaynak sitenin İngilizce sürümünden aktarıldı; Türkçe kalan metinler çevrildi. Belgeler ve kaynak görseller özgün dillerinde korunmuştur.
+- Kontrol: 3.642 yerel sayfa/varlık bağlantısı, 70 sayfanın dil eşleşmeleri ve belge dosya imzaları doğrulandı; JavaScript sözdizimi ve Sites üretim derlemesi başarılı. Tarayıcıda görsel/etkileşim testi ve gerçek GoDaddy sunucu testi yapılmadı. Ayrıntılar `content/validation.json` dosyasındadır.

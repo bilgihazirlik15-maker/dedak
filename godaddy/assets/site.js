@@ -13,7 +13,8 @@ document.querySelector('#contact-form')?.addEventListener('submit',event=>{
   const form=event.currentTarget;
   if(!form.reportValidity())return;
   const data=new FormData(form);
-  const body=`Ad Soyad: ${data.get('name')}\nE-posta: ${data.get('email')}\n\n${data.get('message')}`;
+  const english=document.documentElement.lang==='en';
+  const body=`${english?'Full name':'Ad Soyad'}: ${data.get('name')}\n${english?'Email':'E-posta'}: ${data.get('email')}\n\n${data.get('message')}`;
   window.location.href=`mailto:info@dedak.org?subject=${encodeURIComponent(data.get('subject'))}&body=${encodeURIComponent(body)}`;
-  document.querySelector('#form-status').textContent='E-posta uygulamanızda açılan taslağı kontrol edip gönderin. Uygulama açılmadıysa info@dedak.org adresine doğrudan yazabilirsiniz.';
+  document.querySelector('#form-status').textContent=english?'Review and send the draft in your email application. If no application opened, email info@dedak.org directly.':'E-posta uygulamanızda açılan taslağı kontrol edip gönderin. Uygulama açılmadıysa info@dedak.org adresine doğrudan yazabilirsiniz.';
 });

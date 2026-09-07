@@ -2,6 +2,7 @@ from collect import *
 from urllib.parse import parse_qs
 
 pages=json.loads((DATA/'pages.json').read_text(encoding='utf-8'))
+if (DATA/'pages-en.json').exists():pages+=json.loads((DATA/'pages-en.json').read_text(encoding='utf-8'))
 targets={}
 for p in pages:
     for label,url in p.get('links',[]):

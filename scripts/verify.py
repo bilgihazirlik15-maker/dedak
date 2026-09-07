@@ -5,9 +5,17 @@ import json,zipfile
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy'
 errors=[]; count=0; external=set()
-for path in OUT.glob('*.html'):
+for path in OUT.rglob('*.html'):
     soup=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
-    if soup.html.get('lang')!='tr':errors.append(f'{path.name}: missing Turkish lang')
+    language='en' if path.parent.name=='en' else 'tr'
+    if soup.html.get('lang')!=language:errors.append(f'{path.name}: incorrect language')
+    choices=soup.select('.language-switch a[hreflang]')
+    if {a.get('hreflang') for a in choices}!={'tr','en'}:errors.append(f'{path}: missing language choices')
+    for a in choices:
+        expected=OUT/('en' if a['hreflang']=='en' else '')/path.name
+        actual=(path.parent/a['href']).resolve()
+        if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')
+    if len(soup.select('.language-switch [aria-current="true"]'))!=1:errors.append(f'{path}: invalid active language')
     if not soup.title or len(soup.select('h1'))!=1:errors.append(f'{path.name}: invalid title/h1')
     ids=[e['id'] for e in soup.select('[id]')]
     if len(ids)!=len(set(ids)):errors.append(f'{path.name}: duplicate ids')
@@ -22,13 +30,13 @@ for path in OUT.glob('*.html'):
         if u.fragment and target.suffix=='.html' and target.exists():
             dest=BeautifulSoup(target.read_text(encoding='utf-8'),'html.parser')
             if not dest.find(id=unquote(u.fragment)):errors.append(f'{path.name}: missing fragment {href}')
-        if el.name=='img' and not el.get('alt'):errors.append(f'{path.name}: missing image alt')
+        if el.name=='img' and not el.get('alt') and el.get('aria-hidden')!='true':errors.append(f'{path.name}: missing image alt')
     if '\ufffd' in soup.get_text():errors.append(f'{path.name}: text encoding damage')
 for doc in (OUT/'documents').iterdir():
     raw=doc.read_bytes()
     if doc.suffix=='.pdf' and not raw.startswith(b'%PDF'):errors.append('Invalid PDF '+doc.name)
     if doc.suffix in ['.docx','.pptx'] and not zipfile.is_zipfile(doc):errors.append('Invalid Office document '+doc.name)
-report={'pages':len(list(OUT.glob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish encoding','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['Browser visual/interaction QA','GoDaddy server configuration','External article availability','Email client handoff']}
+report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['Browser visual/interaction QA','GoDaddy server configuration','External article availability','Email client handoff']}
 (ROOT/'content/validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))
 if errors:raise SystemExit(1)

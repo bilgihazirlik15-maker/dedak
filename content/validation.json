@@ -1,7 +1,7 @@
 {
-  "pages": 35,
-  "local_references_checked": 1611,
-  "documents": 33,
+  "pages": 70,
+  "local_references_checked": 3642,
+  "documents": 53,
   "errors": [],
   "external_links": [
     "http://tyyc.yok.gov.tr/",
@@ -14,7 +14,9 @@
     "mailto:info@dedak.org"
   ],
   "checks": [
-    "Turkish encoding",
+    "Turkish/English language metadata",
+    "same-page language switching",
+    "one active language",
     "one primary heading per page",
     "unique IDs",
     "all local links and fragments",

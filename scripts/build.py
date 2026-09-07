@@ -168,12 +168,14 @@ def build_all():
     urls=[f'https://www.dedak.org/{filename(p["slug"])}' for p in pages]+['https://www.dedak.org/site-haritasi.html']
     (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{esc(u)}</loc></url>' for u in urls)+'</urlset>',encoding='utf-8')
     (OUT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://www.dedak.org/sitemap.xml\n',encoding='utf-8')
+    from bilingual import add_languages
+    add_languages(OUT,globals())
     app=ROOT/'site-source/app'
     if app.exists():
         html=BeautifulSoup((OUT/'index.html').read_text(encoding='utf-8'),'html.parser')
         (app/'home-content.ts').write_text('export const homeContent = '+json.dumps(html.body.decode_contents(),ensure_ascii=False)+';\n',encoding='utf-8')
         (app/'globals.css').write_text((ROOT/'assets/site.css').read_text(encoding='utf-8'),encoding='utf-8')
         shutil.copytree(OUT,ROOT/'site-source/public',dirs_exist_ok=True)
-    print(f'Built {len(list(OUT.glob("*.html")))} HTML pages. Assets: {len(assets)}.')
+    print(f'Built {len(list(OUT.rglob("*.html")))} HTML pages. Assets: {len(assets)}.')
 
 if __name__=='__main__':build_all()

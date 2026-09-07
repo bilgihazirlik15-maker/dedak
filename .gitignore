@@ -10,6 +10,7 @@
 /site-source/public/
 /content/*
 !/content/pages.json
+!/content/pages-en.json
 !/content/assets.json
 !/content/navigation.json
 !/content/programs.json
