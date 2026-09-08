@@ -29,6 +29,8 @@ for path in OUT.rglob('*.html'):
         signature=str(normalized)
         if language not in menu_signatures:menu_signatures[language]=signature
         elif signature!=menu_signatures[language]:errors.append(f'{path.name}: inconsistent shared navigation')
+        for link in nav.select('a[href]'):
+            if not urlsplit(link['href']).query.startswith('v='):errors.append(f'{path.name}: unversioned navigation link {link["href"]}')
     for group in soup.select('.nav-group'):
         toggle=group.find('button',class_='submenu-toggle',recursive=False)
         panel=group.find(class_='submenu',recursive=False)
@@ -68,7 +70,7 @@ for path in OUT.glob('*.html'):
     if header_shape(tr)!=header_shape(en):errors.append(f'{path.name}: different localized header structure')
     for selector in ['.announcement-banner','.notice','.contact-grid','.page-cards','details','form']:
         if len(tr.select(selector))!=len(en.select(selector)):errors.append(f'{path.name}: different layout sections: {selector}')
-report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one shared menu per language','exactly one highlighted menu item','dropdown headings and panels','no dropdown arrows','versioned menu assets','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['GoDaddy server configuration','External article availability','Email client handoff']}
+report={'pages':len(list(OUT.rglob('*.html'))),'local_references_checked':count,'documents':len(list((OUT/'documents').iterdir())),'errors':errors,'external_links':sorted(external),'checks':['Turkish/English language metadata','same-page language switching','one active language','one shared menu per language','exactly one highlighted menu item','dropdown headings and panels','no dropdown arrows','versioned menu assets and navigation links','one primary heading per page','unique IDs','all local links and fragments','local images/scripts/styles','PDF/Office file signatures'],'not_tested':['GoDaddy server configuration','External article availability','Email client handoff']}
 (ROOT/'content/validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))
 if errors:raise SystemExit(1)

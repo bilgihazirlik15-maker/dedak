@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260908-1'
+ASSET_VERSION='20260908-2'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -14,6 +14,7 @@ def ascii_slug(s):
     return s.translate(str.maketrans('çğıöşüÇĞİÖŞÜ','cgiosuCGIOSU')).lower()
 def filename(s):return ascii_slug(s)+'.html'
 def url(s):return filename(s)
+def nav_url(s):return f'{url(s)}?v={ASSET_VERSION}'
 def esc(s):return escape(str(s),quote=True)
 def title(p):
     fixes={'Idari Kadro':'İdari Kadro','Uyelik':'Üyelik','Iletisim':'İletişim','Diger':'Diğer Belgeler','Dedak Ölçütler':'DEDAK Ölçütleri','Akreditasyon Basvurusu':'Akreditasyon Başvurusu','Kısaca Dedak':'Kısaca DEDAK'}
@@ -45,14 +46,14 @@ def header(active):
         selected=active==slug
         children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug]
         if children:
-            drop=''.join(f'<a href="{url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
+            drop=''.join(f'<a href="{nav_url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
             current=selected or (active not in menu_slugs and group_for(active)==group)
             entries.append(f'<div class="nav-group"><button class="submenu-toggle section-toggle" aria-label="{label} alt menüsü" aria-expanded="false" aria-controls="submenu-{slug}"'+(' aria-current="true"' if current else '')+f'><span>{label}</span></button><div class="submenu" id="submenu-{slug}" hidden>{drop}</div></div>')
         else:
-            entries.append(f'<a href="{url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
+            entries.append(f'<a href="{nav_url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
     more_current=active in {'galeri','iletisim','site-haritasi'}
-    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more"'+(' aria-current="true"' if more_current else '')+'>Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html">Galeri</a><a href="iletisim.html">İletişim</a><a href="site-haritasi.html">Site haritası</a></div></div>')
-    return '<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
+    entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more"'+(' aria-current="true"' if more_current else '')+f'>Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html?v={ASSET_VERSION}">Galeri</a><a href="iletisim.html?v={ASSET_VERSION}">İletişim</a><a href="site-haritasi.html?v={ASSET_VERSION}">Site haritası</a></div></div>')
+    return f'<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html?v={ASSET_VERSION}" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">e-mail: info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
 def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, değerlendirme ölçütleri, başvuru bilgileri ve kurumsal belgeler.'):
