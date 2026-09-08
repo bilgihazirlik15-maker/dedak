@@ -72,6 +72,22 @@ body,.header{background:var(--page)}
 .notice,.resource>span:first-child{background:#f0ece3}
 .resource:hover{background:#f1ece3}
 .brand img{background:transparent}
+.announcement-banner{position:relative;display:block;overflow:hidden;padding:0}
+.announcement-track{display:grid;min-height:inherit}
+.announcement-slide{grid-area:1/1;display:flex;align-items:center;justify-content:center;text-align:center;padding:72px 110px;opacity:0;visibility:hidden;transition:opacity .45s ease;pointer-events:none}
+.announcement-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
+.announcement-slide h1{font-size:1.8rem;line-height:1.4;margin:0;color:#fff;font-weight:600}
+.announcement-slide a{text-decoration:underline}
+.carousel-controls{position:absolute;inset:auto 22px 20px;display:flex;align-items:center;justify-content:center;gap:10px;color:#fff}
+.carousel-controls[hidden]{display:none}
+.carousel-button,.carousel-pause,.carousel-dot{border:1px solid #ffffff70;background:#ffffff16;color:#fff;backdrop-filter:blur(5px)}
+.carousel-button{width:38px;height:38px;border-radius:50%;font-size:1.55rem;line-height:1;padding:0 0 3px}
+.carousel-pause{min-height:38px;border-radius:999px;padding:6px 14px;font-size:.78rem}
+.carousel-dots{display:flex;align-items:center;gap:7px;padding:0 3px}
+.carousel-dot{width:9px;height:9px;border-radius:50%;padding:0}
+.carousel-dot[aria-current="true"]{background:#fff;transform:scale(1.2)}
+.carousel-button:hover,.carousel-pause:hover,.carousel-dot:hover{background:#ffffff30}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 @media screen and (min-width:641px){
   .nav>a,.nav-group>a{min-height:43px;padding:5px 6px}
@@ -89,4 +105,8 @@ body,.header{background:var(--page)}
   .more-toggle{min-height:44px}
   .submenu,.nav-group:last-child .submenu{background:#f7f3eb;border-radius:7px;padding:4px}
   .submenu a{padding:9px 14px}
+  .announcement-slide{padding:54px 46px 76px}
+  .announcement-slide h1{font-size:1.45rem}
+  .carousel-controls{inset:auto 12px 14px}
 }
+@media(prefers-reduced-motion:reduce){.announcement-slide{transition:none}}
