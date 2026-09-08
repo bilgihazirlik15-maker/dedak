@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260908-8'
+ASSET_VERSION='20260908-9'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -43,7 +43,8 @@ def header(active):
     entries=[]
     for slug,label,group in menu:
         selected=active==slug
-        children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug and not (group=='Kurumsal' and s=='uyelik')]
+        duplicated_top_level={'Kurumsal':{'uyelik'},'Belgeler':{'sunumlar-ve-yayınlar'}}
+        children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug and s not in duplicated_top_level.get(group,set())]
         if children:
             drop=''.join(f'<a href="{nav_url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
             current=selected or (active not in menu_slugs and group_for(active)==group)

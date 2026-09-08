@@ -33,6 +33,8 @@ for path in OUT.rglob('*.html'):
             if not urlsplit(link['href']).query.startswith('v='):errors.append(f'{path.name}: unversioned navigation link {link["href"]}')
         membership_links=[link for link in nav.select('a[href]') if urlsplit(link['href']).path=='uyelik.html']
         if len(membership_links)!=1 or membership_links[0].parent!=nav:errors.append(f'{path.name}: membership must appear only as a top-level menu item')
+        presentations_links=[link for link in nav.select('a[href]') if urlsplit(link['href']).path=='sunumlar-ve-yayinlar.html']
+        if len(presentations_links)!=1 or presentations_links[0].parent!=nav:errors.append(f'{path.name}: presentations must appear only as a top-level menu item')
     for group in soup.select('.nav-group'):
         toggle=group.find('button',class_='submenu-toggle',recursive=False)
         panel=group.find(class_='submenu',recursive=False)
