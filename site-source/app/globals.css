@@ -71,6 +71,7 @@ body,.header{background:var(--page)}
 .footer{background:#eee9df;border-color:#d8d1c5}
 .notice,.resource>span:first-child{background:#f0ece3}
 .resource:hover{background:#f1ece3}
+.brand img{background:transparent}
 
 @media screen and (min-width:641px){
   .nav>a,.nav-group>a{min-height:43px;padding:5px 6px}

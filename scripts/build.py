@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260908-2'
+ASSET_VERSION='20260908-3'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -53,7 +53,7 @@ def header(active):
             entries.append(f'<a href="{nav_url(slug)}"'+(' aria-current="page"' if selected else '')+f'>{label}</a>')
     more_current=active in {'galeri','iletisim','site-haritasi'}
     entries.append('<div class="nav-group"><button class="more-toggle submenu-toggle" aria-expanded="false" aria-controls="submenu-more"'+(' aria-current="true"' if more_current else '')+f'>Diğer</button><div class="submenu" id="submenu-more" hidden><a href="galeri.html?v={ASSET_VERSION}">Galeri</a><a href="iletisim.html?v={ASSET_VERSION}">İletişim</a><a href="site-haritasi.html?v={ASSET_VERSION}">Site haritası</a></div></div>')
-    return f'<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html?v={ASSET_VERSION}" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo.jpg" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
+    return f'<a class="skip" href="#main">İçeriğe geç</a><header class="header"><div class="wrap header-inner"><a class="brand" href="index.html?v={ASSET_VERSION}" aria-label="DEDAK ana sayfa"><img src="assets/dedak-logo-transparent.png?v={ASSET_VERSION}" alt="DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu" width="214" height="83"></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menü ☰</button><nav class="nav" id="navigation" aria-label="Ana menü">'+''.join(entries)+'</nav></div></header>'
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">e-mail: info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
 def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, değerlendirme ölçütleri, başvuru bilgileri ve kurumsal belgeler.'):
