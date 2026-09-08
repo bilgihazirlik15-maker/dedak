@@ -42,6 +42,8 @@ for path in OUT.rglob('*.html'):
     if not stylesheet or '?v=' not in stylesheet.get('href',''):errors.append(f'{path.name}: unversioned stylesheet')
     if not script or '?v=' not in script.get('src',''):errors.append(f'{path.name}: unversioned menu script')
     if not soup.title or len(soup.select('h1'))!=1:errors.append(f'{path.name}: invalid title/h1')
+    if any(symbol in link.get_text(' ',strip=True) for link in soup.select('a') for symbol in ('↗','→')):errors.append(f'{path.name}: decorative arrow in link text')
+    if soup.select('a .arrow'):errors.append(f'{path.name}: decorative arrow element inside link')
     if path.name=='index.html':
         carousel=soup.select_one('[data-carousel]')
         if not carousel or len(carousel.select('.announcement-slide'))<1:errors.append(f'{path}: missing announcement carousel')

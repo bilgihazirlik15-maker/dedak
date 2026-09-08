@@ -9,7 +9,7 @@ SOURCE_MAP={'about-3':'about-3-2','tuzuk':'about-3'}
 UI={
  'Anasayfa':'Home','Ana Sayfa':'Home','Hakkında':'About','Kurumsal':'About DEDAK','Akreditasyon':'Accreditation','Üyelik':'Membership','Belgeler':'Documents','Sunumlar ve Yayınlar':'Presentations and Publications','Duyurular':'Announcements','Diğer':'More','Galeri':'Gallery','İletişim':'Contact','Site haritası':'Site map','Menü ☰':'Menu ☰','İçeriğe geç':'Skip to content','Ana menü':'Main navigation','DEDAK ana sayfa':'DEDAK home',
  'Duyuru slaytları':'Announcement slides','Önceki duyuru':'Previous announcement','Sonraki duyuru':'Next announcement','Duyuru seçimi':'Announcement selection','Slayt gösterisini duraklat':'Pause slideshow','Duraklat':'Pause',
- 'DEDAK Akreditasyon Başvuruları':'DEDAK Accreditation Applications','DEDAK akreditasyon başvuruları':'DEDAK accreditation applications','2027 akreditasyon dönemi':'2027 accreditation cycle','Başvuru rehberini inceleyin ↗':'Read the application guide ↗','Kurumsal belge':'Institutional document','Akreditasyon için temel belgeler':'Essential accreditation documents',
+ 'DEDAK Akreditasyon Başvuruları':'DEDAK Accreditation Applications','DEDAK akreditasyon başvuruları':'DEDAK accreditation applications','2027 akreditasyon dönemi':'2027 accreditation cycle','Başvuru rehberini inceleyin':'Read the application guide','Kurumsal belge':'Institutional document','Akreditasyon için temel belgeler':'Essential accreditation documents',
  'DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.':'DEDAK’s foundation, governance, approach to quality and strategic objectives.',
  'Akreditasyon çalışmalarında kullanılan belgeler, kurumsal düzenlemeler ve başvuru formları.':'Documents, institutional regulations and application forms used in the accreditation process.',
  'DEDAK kurul, komite ve komisyon üyeleri — 2026.':'DEDAK board and committee members — 2026.',
@@ -18,12 +18,12 @@ UI={
  'Liste geçmiş dönem kayıtlarını da içerir. Her programın akreditasyon geçerlilik tarihini ilgili kayıttan kontrol edin.':'This list also includes historical records. Check the accreditation validity dates in each program’s record.',
  'Son değerlendirme dönemi':'Last evaluation period','Akreditasyon geçerlilik süresi':'Accreditation validity period','Orijinal program listesini görüntüle':'View the original program list',
  'İngilizce Hazırlık Programı':'English Preparatory Program','İngilizce Hazırlık Programı — Lisans':'Undergraduate English Preparatory Program','Zorunlu İngilizce Hazırlık Programı':'Compulsory English Preparatory Program','Temel İngilizce Bölümü':'Basic English Department','Yabancı Diller Yüksekokulu İngilizce Hazırlık Programı':'School of Foreign Languages English Preparatory Program','Yabancı Diller Yüksekokulu Hazırlık Programı':'School of Foreign Languages Preparatory Program',
- 'DEDAK etkinlik arşivi':'DEDAK event archive','Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.':'Please contact DEDAK for event photographs.','İletişim ↗':'Contact ↗',
- 'E-posta':'Email','Adres':'Address','Bize yazın':'Write to us','Ad soyad':'Full name','E-posta adresi':'Email address','Konu':'Subject','Mesajınız':'Your message','E-posta taslağı oluştur ↗':'Create an email draft ↗',
+ 'DEDAK etkinlik arşivi':'DEDAK event archive','Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.':'Please contact DEDAK for event photographs.','İletişim':'Contact',
+ 'E-posta':'Email','Adres':'Address','Bize yazın':'Write to us','Ad soyad':'Full name','E-posta adresi':'Email address','Konu':'Subject','Mesajınız':'Your message','E-posta taslağı oluştur':'Create an email draft',
  'Akreditasyon, başvuru ve kurumsal konulardaki sorularınız için:':'For questions about accreditation, applications or institutional matters:',
  'Form, mesajınızı e-posta uygulamanızda taslak olarak açar. Gönderimi açılan uygulamadan tamamlayabilirsiniz.':'This form opens your message as a draft in your email application. You can review and send it from there.',
  'Bu form mesajınızı sunucuya kaydetmez. Çalışması için cihazınızda bir e-posta uygulaması tanımlı olmalıdır.':'This form does not store your message on a server. An email application must be configured on your device.',
- 'Bu sayfa bulunamadı.':'Page not found.','Aradığınız içeriğe ana sayfadan veya site haritasından ulaşabilirsiniz.':'You can find the content you need from the home page or site map.','Ana sayfaya dön →':'Return to home →',
+ 'Bu sayfa bulunamadı.':'Page not found.','Aradığınız içeriğe ana sayfadan veya site haritasından ulaşabilirsiniz.':'You can find the content you need from the home page or site map.','Ana sayfaya dön':'Return to home',
  'DEDAK — Dil Eğitimi Değerlendirme ve Akreditasyon Kurulu':'DEDAK — Evaluation and Accreditation of Language Education',
  'İdari ve Mali İşler Yöneticisi: Banu Mete Zor':'Administrative and Financial Affairs Manager: Banu Mete Zor',
  'Akbank İstanbul Sultanbeyli TEM Şubesi':'Akbank Istanbul Sultanbeyli TEM Branch','Şube kodu : 0728':'Branch code: 0728','Hesap numarası: 0150737':'Account number: 0150737',
@@ -121,7 +121,7 @@ def add_languages(out,b):
             template.select_one('details > div').replace_with(BeautifulSoup('<div>'+clean(p)+'</div>','html.parser'))
             template.select_one('.resource-list').replace_with(BeautifulSoup(docs(p),'html.parser'))
             return str(template)
-        if slug=='duyurular':return '<span class="eyebrow">2027 accreditation cycle</span><h2>DEDAK accreditation applications</h2><p>Applications for the 2027 cycle will be accepted from 2 November to 1 December 2026.</p><p><a class="button" href="akreditasyon-basvurusu.html">Read the application guide ↗</a></p>'+clean(p)+docs(p)
+        if slug=='duyurular':return '<span class="eyebrow">2027 accreditation cycle</span><h2>DEDAK accreditation applications</h2><p>Applications for the 2027 cycle will be accepted from 2 November to 1 December 2026.</p><p><a class="button" href="akreditasyon-basvurusu.html">Read the application guide</a></p>'+clean(p)+docs(p)
         if slug=='akreditasyon-ücretleri':return '<div class="notice">Fees for 2027 applications are expected to be updated in early November. Confirm the current fee table below with DEDAK before applying.</div>'+b['figures'](p)+clean(p)
         if slug in ['organizasyon-semasi','akreditasyon-sürecinde-olan-kurumlar']:return b['figures'](p)+clean(p)
         if slug=='hakkinda':return '<p>DEDAK’s foundation, governance, approach to quality and strategic objectives.</p>'+b['cards'](b['groups']['Kurumsal'])+'<h2>Institutional document</h2>'+docs(p)

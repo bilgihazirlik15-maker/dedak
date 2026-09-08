@@ -91,7 +91,6 @@ body,.header{background:var(--page)}
 .announcement-preview{padding-top:34px;padding-bottom:72px}
 .announcement-preview .announcement-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-bottom:12px}
 .announcement-more{display:inline-flex;align-items:center;min-height:38px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
-.announcement-more::after{content:' →';margin-left:5px;text-decoration:none}
 
 @media screen and (min-width:641px){
   .nav>a,.nav-group>a{min-height:43px;padding:5px 6px}
