@@ -46,6 +46,12 @@ for path in OUT.rglob('*.html'):
         carousel=soup.select_one('[data-carousel]')
         if not carousel or len(carousel.select('.announcement-slide'))<1:errors.append(f'{path}: missing announcement carousel')
         elif not carousel.select_one('.carousel-controls'):errors.append(f'{path}: missing carousel controls')
+        preview=soup.select_one('.announcement-preview')
+        more=preview.select_one('.announcement-more') if preview else None
+        expected_more='More' if language=='en' else 'Daha fazla göster'
+        if not preview or len(preview.select('.announcement-excerpt'))!=1:errors.append(f'{path}: invalid announcement preview')
+        if not more or more.get_text(' ',strip=True)!=expected_more or urlsplit(more.get('href','')).path!='duyurular.html':errors.append(f'{path}: invalid announcements link')
+        if preview.select('.resource,details'):errors.append(f'{path}: full announcement content leaked into homepage preview')
     ids=[e['id'] for e in soup.select('[id]')]
     if len(ids)!=len(set(ids)):errors.append(f'{path.name}: duplicate ids')
     for el in soup.select('a[href],img[src],link[href],script[src]'):

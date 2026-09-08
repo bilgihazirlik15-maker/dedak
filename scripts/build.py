@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260908-4'
+ASSET_VERSION='20260908-5'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -60,10 +60,13 @@ def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, d
     return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102d4c"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script></head><body>{header(active)}{body}{footer()}</body></html>'
 def homepage():
     text=clean_content(by_slug['duyurular'])
+    first_paragraph=BeautifulSoup(text,'html.parser').find('p')
+    preview=first_paragraph.get_text(' ',strip=True) if first_paragraph else 'Güncel DEDAK duyurularını inceleyin.'
     slides=[('DEDAK Akreditasyon Başvuruları','duyurular')]
     slide_html=''.join(f'<article class="announcement-slide{" is-active" if i==0 else ""}" aria-roledescription="slide" aria-label="{i+1} / {len(slides)}"><h1><a href="{nav_url(slug)}">{esc(label)}</a></h1></article>' for i,(label,slug) in enumerate(slides))
     carousel='<section class="announcement-banner" data-carousel aria-roledescription="carousel" aria-label="Duyuru slaytları"><div class="announcement-track">'+slide_html+'</div><div class="carousel-controls" hidden><button class="carousel-button carousel-prev" type="button" aria-label="Önceki duyuru">‹</button><div class="carousel-dots" aria-label="Duyuru seçimi"></div><button class="carousel-button carousel-next" type="button" aria-label="Sonraki duyuru">›</button><button class="carousel-pause" type="button" aria-label="Slayt gösterisini duraklat">Duraklat</button></div><p class="visually-hidden carousel-status" aria-live="polite"></p></section>'
-    return '<main id="main" class="wrap home">'+carousel+'<article class="prose home-announcement">'+text+resources(by_slug['akreditasyon-başvurusu'])+'</article></main>'
+    announcement_preview=f'<article class="prose home-announcement announcement-preview"><p class="announcement-excerpt">{esc(preview)}</p><a class="announcement-more" href="{nav_url("duyurular")}">Daha fazla göster</a></article>'
+    return '<main id="main" class="wrap home">'+carousel+announcement_preview+'</main>'
 
 def write_home():
     shutil.copytree(ROOT/'assets',OUT/'assets',dirs_exist_ok=True)

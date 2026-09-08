@@ -128,7 +128,11 @@ def add_languages(out,b):
         if slug=='belgeler':return '<p>Institutional regulations, application forms and accreditation guides.</p>'+b['cards'](b['groups']['Belgeler'])+'<h2>Essential accreditation documents</h2>'+docs(localized['akreditasyon-süreci'])
         if slug=='akreditasyon':return clean(p)+b['cards'](b['groups']['Akreditasyon'])
         if slug in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return docs(p)
-        if slug=='index':return clean(localized['duyurular'])+docs(localized['akreditasyon-başvurusu'])
+        if slug=='index':
+            source=BeautifulSoup(clean(localized['duyurular']),'html.parser')
+            first=source.find('p')
+            preview=first.get_text(' ',strip=True) if first else 'Read the latest DEDAK announcements.'
+            return f'<p class="announcement-excerpt">{b["esc"](preview)}</p><a class="announcement-more" href="duyurular.html?v={b["ASSET_VERSION"]}">More</a>'
         return clean(p)+b['figures'](p)+docs(p)
 
     for path in sorted(out.glob('*.html')):
