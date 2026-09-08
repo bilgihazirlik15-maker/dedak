@@ -31,6 +31,8 @@ for path in OUT.rglob('*.html'):
         elif signature!=menu_signatures[language]:errors.append(f'{path.name}: inconsistent shared navigation')
         for link in nav.select('a[href]'):
             if not urlsplit(link['href']).query.startswith('v='):errors.append(f'{path.name}: unversioned navigation link {link["href"]}')
+        membership_links=[link for link in nav.select('a[href]') if urlsplit(link['href']).path=='uyelik.html']
+        if len(membership_links)!=1 or membership_links[0].parent!=nav:errors.append(f'{path.name}: membership must appear only as a top-level menu item')
     for group in soup.select('.nav-group'):
         toggle=group.find('button',class_='submenu-toggle',recursive=False)
         panel=group.find(class_='submenu',recursive=False)
