@@ -114,3 +114,9 @@ body,.header{background:var(--page)}
   .announcement-preview{padding-top:26px;padding-bottom:48px}
 }
 @media(prefers-reduced-motion:reduce){.announcement-slide{transition:none}}
+
+@keyframes menuFadeIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.nav a,.nav button{transition:background-color .18s ease,color .18s ease}
+.submenu:not([hidden]){animation:menuFadeIn .2s cubic-bezier(.2,.75,.3,1) both;transform-origin:top}
+@media screen and (max-width:640px){.nav.open{animation:menuFadeIn .2s cubic-bezier(.2,.75,.3,1) both;transform-origin:top}}
+@media(prefers-reduced-motion:reduce){.nav a,.nav button{transition:none}.submenu:not([hidden]),.nav.open{animation:none}}
