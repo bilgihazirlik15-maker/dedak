@@ -72,6 +72,8 @@ body,.header{background:var(--page)}
 .notice,.resource>span:first-child{background:#dceaf5}
 .resource:hover{background:#d4e7f5}
 .brand img{background:transparent}
+.home{width:100%;max-width:none;padding-top:30px}
+.home .announcement-preview{width:min(1176px,calc(100% - 48px));margin-inline:auto}
 .announcement-banner{position:relative;display:block;overflow:hidden;padding:0}
 .announcement-track{display:grid;min-height:inherit}
 .announcement-slide{grid-area:1/1;display:flex;align-items:center;justify-content:center;text-align:center;padding:72px 110px;opacity:0;visibility:hidden;transition:opacity .45s ease;pointer-events:none}
@@ -101,6 +103,8 @@ body,.header{background:var(--page)}
   .nav{grid-auto-rows:43px}
 }
 @media screen and (max-width:640px){
+  .home{padding-top:20px}
+  .home .announcement-preview{width:calc(100% - 38.4px)}
   .nav{background:#e1eff9;border-radius:10px;padding:6px;box-shadow:0 12px 30px #183e601f}
   .nav>a,.nav-group>a{min-height:44px;padding:10px 14px;border-radius:6px}
   .submenu-toggle{min-height:44px}
