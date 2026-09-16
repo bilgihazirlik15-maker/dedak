@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-10'
+ASSET_VERSION='20260916-11'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -175,11 +175,11 @@ def build_all():
         if p['slug'] in ['uyelik','sunumlar-ve-yayınlar']:active=p['slug']
         desc=BeautifulSoup(p.get('html',''),'html.parser').get_text(' ',strip=True)[:160] or title(p)+' — DEDAK kurumsal web sitesi.'
         (OUT/filename(p['slug'])).write_text(shell(title(p),inner(p),active,desc),encoding='utf-8')
-    sitemap_content='<main id="main" class="wrap section"><span class="eyebrow">DEDAK</span><h1>Site haritası</h1>'
+    sitemap_content='<main id="main" class="wrap section"><h1>Site haritası</h1>'
     for g,slugs in groups.items():sitemap_content+=f'<h2>{g}</h2>'+cards(slugs)
     sitemap_content+='</main>'
     (OUT/'site-haritasi.html').write_text(shell('Site haritası',sitemap_content,'site-haritasi'),encoding='utf-8')
-    notfound='<main class="wrap section" id="main"><span class="eyebrow">404</span><h1>Bu sayfa bulunamadı.</h1><p>Aradığınız içeriğe ana sayfadan veya site haritasından ulaşabilirsiniz.</p><a class="button" href="index.html">Ana sayfaya dön</a></main>'
+    notfound='<main class="wrap section" id="main"><h1>Bu sayfa bulunamadı.</h1><p>Aradığınız içeriğe ana sayfadan veya site haritasından ulaşabilirsiniz.</p><a class="button" href="index.html">Ana sayfaya dön</a></main>'
     (OUT/'404.html').write_text(shell('Sayfa bulunamadı',notfound,''),encoding='utf-8')
     ht=['# GoDaddy Linux / cPanel Apache hosting','DirectoryIndex index.html','AddDefaultCharset UTF-8','ErrorDocument 404 /404.html','<IfModule mod_rewrite.c>','RewriteEngine On']
     for p in pages:
