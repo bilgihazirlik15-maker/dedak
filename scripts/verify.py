@@ -30,6 +30,9 @@ for path in OUT.rglob('*.html'):
         actual=[(row.select_one('.program-index').get_text(strip=True),row.select_one('.program-identity strong').get_text(' ',strip=True),*[cell.get_text(' ',strip=True) for cell in row.select('td')]) for row in rows]
         if actual!=[(number,name,evaluation,period) for number,name,_,evaluation,period in expected]:errors.append(f'{path}: accredited program table differs from source data')
         if not soup.select_one('details[hidden] > summary'):errors.append(f'{path}: original program list must remain hidden')
+    if path.name=='akreditasyon.html':
+        first=soup.select_one('main article').find(['h2','p'])
+        if first and first.get_text(' ',strip=True).casefold().replace('\u0307','') in {'akreditasyon','accreditation'}:errors.append(f'{path}: repeated accreditation heading')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:
@@ -60,6 +63,10 @@ for path in OUT.rglob('*.html'):
     if not soup.title or len(soup.select('h1'))!=1:errors.append(f'{path.name}: invalid title/h1')
     if any(symbol in link.get_text(' ',strip=True) for link in soup.select('a') for symbol in ('↗','→')):errors.append(f'{path.name}: decorative arrow in link text')
     if soup.select('a .arrow'):errors.append(f'{path.name}: decorative arrow element inside link')
+    for link in soup.select('a[href]'):
+        href=urlsplit(link['href'])
+        if link.find_parent(class_='language-switch') or (not href.path and href.fragment) or href.scheme in {'mailto','tel','javascript','data'}:continue
+        if link.get('target')!='_blank' or not {'noopener','noreferrer'}.issubset(set(link.get('rel',[]))) or link.has_attr('download'):errors.append(f'{path}: link must open safely in a new tab: {link["href"]}')
     if path.name=='index.html':
         carousel=soup.select_one('[data-carousel]')
         if not carousel or len(carousel.select('.announcement-slide'))<1:errors.append(f'{path}: missing announcement carousel')

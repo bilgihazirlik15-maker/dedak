@@ -58,7 +58,7 @@ def translate_tree(soup,mapping):
     def convert(text):
         stripped=text.strip()
         if stripped in mapping:return text.replace(stripped,mapping[stripped])
-        return text.replace('(Başkan Yardımcısı)','(Vice Chair)').replace('(Başkan)','(Chair)').replace(' — büyütmek için görsele tıklayın.',' — click the image to enlarge.').replace(' · İndir',' · Download')
+        return text.replace('(Başkan Yardımcısı)','(Vice Chair)').replace('(Başkan)','(Chair)').replace(' — büyütmek için görsele tıklayın.',' — click the image to enlarge.').replace(' · Aç',' · Open')
     for node in list(soup.find_all(string=True)):
         if isinstance(node,Doctype):continue
         if node.parent.name not in ['script','style']:node.replace_with(convert(str(node)))
@@ -110,7 +110,7 @@ def add_languages(out,b):
 
     def docs(p):
         soup=BeautifulSoup(b['resources'](p),'html.parser')
-        translate_tree(soup,{'İndir':'Download'})
+        translate_tree(soup,{'Aç':'Open'})
         return str(soup)
 
     def english_article(slug,current):
@@ -127,7 +127,7 @@ def add_languages(out,b):
         if slug=='organizasyon-semasi':return b['figures'](p)+clean(p)
         if slug=='hakkinda':return '<p>DEDAK’s foundation, governance, approach to quality and strategic objectives.</p>'+b['cards'](b['groups']['Kurumsal'])+'<h2>Institutional document</h2>'+docs(p)
         if slug=='belgeler':return '<p>Institutional regulations, application forms and accreditation guides.</p>'+b['cards'](b['groups']['Belgeler'])+'<h2>Essential accreditation documents</h2>'+docs(localized['akreditasyon-süreci'])
-        if slug=='akreditasyon':return clean(p)+b['cards'](b['groups']['Akreditasyon'])
+        if slug=='akreditasyon':return b['without_repeated_accreditation_heading'](clean(p))+b['cards'](b['groups']['Akreditasyon'])
         if slug in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return docs(p)
         if slug=='index':
             source=BeautifulSoup(clean(localized['duyurular']),'html.parser')

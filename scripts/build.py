@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-11'
+ASSET_VERSION='20260916-12'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -82,7 +82,7 @@ def resources(p):
         ext=Path(meta['file']).suffix.lstrip('.').upper()
         size=meta['bytes']/1024
         size_label=f'{size/1024:.1f} MB' if size>1024 else f'{size:.0f} KB'
-        items.append(f'<a class="resource" href="{esc(meta["file"])}" download><span>{ext}</span><span><b>{esc(name)}</b><small>{size_label} · İndir</small></span></a>')
+        items.append(f'<a class="resource" href="{esc(meta["file"])}"><span>{ext}</span><span><b>{esc(name)}</b><small>{size_label} · Aç</small></span></a>')
     return '<div class="resource-list">'+''.join(items)+'</div>' if items else ''
 
 def clean_content(p):
@@ -99,6 +99,12 @@ def clean_content(p):
     html=str(soup)
     html=html.replace('17 Kasım 2025 Salı 19:00','17 Kasım 2026 Salı 19:00')
     return html
+
+def without_repeated_accreditation_heading(html):
+    soup=BeautifulSoup(html,'html.parser')
+    first=soup.find(['h2','p'])
+    if first and first.get_text(' ',strip=True).casefold().replace('\u0307','') in {'akreditasyon','accreditation'}:first.decompose()
+    return str(soup)
 
 def figures(p):
     return ''.join(f'<figure><a href="{esc(assets[i["url"]]["file"])}" target="_blank" rel="noopener"><img loading="lazy" src="{esc(assets[i["url"]]["file"])}" alt="{esc(i["alt"] or title(p))}"></a><figcaption>{esc(title(p))} — büyütmek için görsele tıklayın.</figcaption></figure>' for i in p.get('images',[]) if i['url'] in assets and 'error' not in assets[i['url']])
@@ -148,7 +154,7 @@ def institutions_table():
 def content_for(p):
     s=p['slug']
     if s=='hakkinda':return '<p>DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.</p>'+cards(groups['Kurumsal'])+'<h2>Kurumsal belge</h2>'+resources(p)
-    if s=='akreditasyon':return clean_content(p)+cards(groups['Akreditasyon'])
+    if s=='akreditasyon':return without_repeated_accreditation_heading(clean_content(p))+cards(groups['Akreditasyon'])
     if s=='belgeler':return '<p>Akreditasyon çalışmalarında kullanılan belgeler, kurumsal düzenlemeler ve başvuru formları.</p>'+cards(groups['Belgeler'])+'<h2>Akreditasyon için temel belgeler</h2>'+resources(by_slug['akreditasyon-süreci'])
     if s=='akreditasyon-başvurusu':return application()
     if s=='duyurular':return '<span class="eyebrow">2027 akreditasyon dönemi</span><h2>DEDAK akreditasyon başvuruları</h2><p>2027 başvuruları 2 Kasım – 1 Aralık 2026 tarihleri arasında kabul edilecektir.</p><p><a class="button" href="akreditasyon-basvurusu.html">Başvuru rehberini inceleyin</a></p>'+clean_content(p)+resources(p)
@@ -166,6 +172,17 @@ def inner(p):
     page_class='wrap inner-page institutions-page' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'wrap inner-page'
     if p['slug']=='akredite-edilen-programlar':page_class='wrap inner-page programs-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
+
+def open_content_links_in_new_tabs():
+    for path in OUT.rglob('*.html'):
+        soup=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+        for link in soup.select('a[href]'):
+            href=link['href'];parsed=urlsplit(href)
+            if link.find_parent(class_='language-switch') or (not parsed.path and parsed.fragment) or parsed.scheme in {'mailto','tel','javascript','data'}:continue
+            link['target']='_blank'
+            link['rel']=sorted(set(link.get('rel',[]))|{'noopener','noreferrer'})
+            link.attrs.pop('download',None)
+        path.write_text(str(soup),encoding='utf-8')
 
 def build_all():
     write_home()
@@ -195,6 +212,7 @@ def build_all():
     (OUT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://www.dedak.org/sitemap.xml\n',encoding='utf-8')
     from bilingual import add_languages
     add_languages(OUT,globals())
+    open_content_links_in_new_tabs()
     app=ROOT/'site-source/app'
     if app.exists():
         html=BeautifulSoup((OUT/'index.html').read_text(encoding='utf-8'),'html.parser')
