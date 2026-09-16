@@ -69,6 +69,13 @@ body,.header{background:var(--page)}
 .submenu{background:#edf6fc;border-color:var(--menu-border);border-radius:0 0 10px 10px;box-shadow:0 12px 28px #183e601a;padding:6px}
 .submenu a{border-radius:6px;padding:9px 13px}
 .footer{background:#d5e7f4;border-color:#b9d3e7}
+.footer{padding:12px 0}
+.footer .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:12px;white-space:nowrap}
+.footer-email{grid-column:2;grid-row:1;margin:0;font-size:.85rem;line-height:1.4}
+.footer-bottom{display:contents;font-size:.8rem}
+.footer-bottom span{grid-column:1;grid-row:1}
+.footer-bottom a{grid-column:3;grid-row:1;justify-self:end}
+@media screen and (max-width:640px){.footer .wrap{column-gap:6px}.footer-email{font-size:.72rem}.footer-bottom{font-size:.7rem}}
 .notice,.resource>span:first-child{background:#dceaf5}
 .resource:hover{background:#d4e7f5}
 .brand img{background:transparent}
