@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-7'
+ASSET_VERSION='20260916-8'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -134,6 +134,11 @@ def program_records(p):
         items.append(f'<section class="program-record"><span class="eyebrow">Program {esc(number)}</span><h2>{esc(name)}</h2><p>{esc(program)}</p><dl><div><dt>Son değerlendirme dönemi</dt><dd>{esc(evaluation)}</dd></div><div><dt>Akreditasyon geçerlilik süresi</dt><dd>{esc(period)}</dd></div></dl></section>')
     return intro+''.join(items)+'<details hidden><summary>Orijinal program listesini görüntüle</summary>'+figures(p)+'</details>'
 
+def institutions_table():
+    institutions=json.loads((ROOT/'content/in-progress-institutions.json').read_text(encoding='utf-8'))
+    rows=''.join('<tr><td>'+esc(name)+'</td><td>Şubat / February '+str(year)+'</td></tr>' for name,year in institutions)
+    return '<div class="institution-table-wrap"><table class="institution-table"><colgroup><col style="width:65%"><col style="width:35%"></colgroup><thead><tr><th scope="col">Akreditasyon Sürecinde Olan Kurumlar<br><span>Institutions in the Process of Accreditation</span></th><th scope="col">Süreç Başlangıç Tarihi<br><span>Beginning Date of Process</span></th></tr></thead><tbody>'+rows+'</tbody></table></div>'
+
 def content_for(p):
     s=p['slug']
     if s=='hakkinda':return '<p>DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.</p>'+cards(groups['Kurumsal'])+'<h2>Kurumsal belge</h2>'+resources(p)
@@ -147,12 +152,13 @@ def content_for(p):
     if s=='galeri':return '<div class="notice"><h2>DEDAK etkinlik arşivi</h2><p>Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.</p><a class="button" href="iletisim.html">İletişim</a></div>'
     if s in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return resources(p)
     if s=='akreditasyon-ücretleri':return '<div class="notice">2027 başvuruları için ücretlerin Kasım ayı başında güncellenmesi öngörülmektedir. Aşağıdaki mevcut ücret tablosunu başvuru öncesinde DEDAK ile teyit edin.</div>'+figures(p)+clean_content(p)
-    if s in ['akredite-edilen-programlar','akreditasyon-sürecinde-olan-kurumlar','organizasyon-semasi']:return figures(p)+clean_content(p)
+    if s=='akreditasyon-sürecinde-olan-kurumlar':return institutions_table()
+    if s in ['akredite-edilen-programlar','organizasyon-semasi']:return figures(p)+clean_content(p)
     return clean_content(p)+figures(p)+resources(p)
 
 def inner(p):
-    article_class='prose centered-table' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'prose'
-    return '<main id="main" class="wrap inner-page"><h1 class="page-title">'+esc(title(p))+'</h1><article class="'+article_class+'">'+content_for(p)+'</article></main>'
+    page_class='wrap inner-page institutions-page' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'wrap inner-page'
+    return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def build_all():
     write_home()

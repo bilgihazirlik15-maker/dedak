@@ -73,8 +73,18 @@ body,.header{background:var(--page)}
 .footer-bottom span{grid-column:1;grid-row:1}
 .footer-bottom a{grid-column:3;grid-row:1;justify-self:end}
 @media screen and (max-width:640px){.footer .wrap{column-gap:6px}.footer-email{font-size:.72rem}.footer-bottom{font-size:.7rem}}
-.centered-table figure{width:min(603px,100%);margin-inline:auto}
-.centered-table figcaption{text-align:center}
+.institutions-page{padding-top:36px}
+.institutions-page .page-title{min-height:0;margin-bottom:20px}
+.institution-table-wrap{width:min(980px,100%);margin-inline:auto;overflow:hidden;border:1px solid #b9d3e7;border-radius:14px;background:#fff;box-shadow:0 12px 32px #183e6014}
+.institutions-page .prose .institution-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:.95rem}
+.institutions-page .institution-table th{padding:17px 20px;border:0;background:#194878;color:#fff;text-align:left;font-weight:700;line-height:1.45;vertical-align:middle}
+.institutions-page .institution-table th+th{border-left:1px solid #ffffff2e;text-align:center}
+.institutions-page .institution-table th span{font-weight:400}
+.institutions-page .institution-table td{padding:11px 20px;border:0;border-top:1px solid #dceaf5;vertical-align:middle;line-height:1.5}
+.institutions-page .institution-table td+td{border-left:1px solid #dceaf5;text-align:center;color:#194878;font-weight:600}
+.institutions-page .institution-table tbody tr:nth-child(even){background:#f2f8fd}
+.institutions-page .institution-table tbody tr:hover{background:#e8f3fb}
+@media screen and (max-width:640px){.institutions-page{padding-top:24px}.institutions-page .page-title{margin-bottom:14px}.institutions-page .prose .institution-table{font-size:.82rem}.institutions-page .institution-table th,.institutions-page .institution-table td{padding:10px 9px}}
 .notice,.resource>span:first-child{background:#dceaf5}
 .resource:hover{background:#d4e7f5}
 .brand img{background:transparent}

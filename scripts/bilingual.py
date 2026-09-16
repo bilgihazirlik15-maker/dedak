@@ -115,7 +115,7 @@ def add_languages(out,b):
 
     def english_article(slug,current):
         p=localized[slug]
-        if slug in ['iletisim','kurucu-kurul','akredite-edilen-programlar','galeri']:return current
+        if slug in ['iletisim','kurucu-kurul','akredite-edilen-programlar','akreditasyon-sürecinde-olan-kurumlar','galeri']:return current
         if slug=='akreditasyon-başvurusu':
             template=BeautifulSoup(current,'html.parser')
             template.select_one('details > div').replace_with(BeautifulSoup('<div>'+clean(p)+'</div>','html.parser'))
@@ -123,7 +123,7 @@ def add_languages(out,b):
             return str(template)
         if slug=='duyurular':return '<span class="eyebrow">2027 accreditation cycle</span><h2>DEDAK accreditation applications</h2><p>Applications for the 2027 cycle will be accepted from 2 November to 1 December 2026.</p><p><a class="button" href="akreditasyon-basvurusu.html">Read the application guide</a></p>'+clean(p)+docs(p)
         if slug=='akreditasyon-ücretleri':return '<div class="notice">Fees for 2027 applications are expected to be updated in early November. Confirm the current fee table below with DEDAK before applying.</div>'+b['figures'](p)+clean(p)
-        if slug in ['organizasyon-semasi','akreditasyon-sürecinde-olan-kurumlar']:return b['figures'](p)+clean(p)
+        if slug=='organizasyon-semasi':return b['figures'](p)+clean(p)
         if slug=='hakkinda':return '<p>DEDAK’s foundation, governance, approach to quality and strategic objectives.</p>'+b['cards'](b['groups']['Kurumsal'])+'<h2>Institutional document</h2>'+docs(p)
         if slug=='belgeler':return '<p>Institutional regulations, application forms and accreditation guides.</p>'+b['cards'](b['groups']['Belgeler'])+'<h2>Essential accreditation documents</h2>'+docs(localized['akreditasyon-süreci'])
         if slug=='akreditasyon':return clean(p)+b['cards'](b['groups']['Akreditasyon'])

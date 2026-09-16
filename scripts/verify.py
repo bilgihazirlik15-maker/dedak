@@ -20,6 +20,10 @@ for path in OUT.rglob('*.html'):
         actual=(path.parent/unquote(urlsplit(a['href']).path)).resolve()
         if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')
     if len(soup.select('.language-switch [aria-current="true"]'))!=1:errors.append(f'{path}: invalid active language')
+    if path.name=='akreditasyon-surecinde-olan-kurumlar.html':
+        expected=json.loads((ROOT/'content/in-progress-institutions.json').read_text(encoding='utf-8'))
+        actual=[(cells[0].get_text(' ',strip=True),cells[1].get_text(' ',strip=True)) for row in soup.select('.institution-table tbody tr') if len(cells:=row.select('td'))==2]
+        if actual!=[(name,f'Şubat / February {year}') for name,year in expected]:errors.append(f'{path}: institution table differs from source data')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:
