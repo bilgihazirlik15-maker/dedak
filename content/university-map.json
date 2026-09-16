@@ -1,0 +1,77 @@
+[
+  {
+    "id": "istanbul",
+    "tr": "İstanbul",
+    "en": "Istanbul",
+    "lon": 28.98,
+    "lat": 41.01,
+    "universities": [
+      {"name": "Altınbaş Üniversitesi", "url": "https://www.altinbas.edu.tr/tr"},
+      {"name": "İstanbul Kültür Üniversitesi", "url": "https://iku.edu.tr/"}
+    ]
+  },
+  {
+    "id": "izmir-manisa",
+    "tr": "İzmir · Manisa",
+    "en": "Izmir · Manisa",
+    "lon": 27.4,
+    "lat": 38.5,
+    "universities": [
+      {"name": "İzmir Ekonomi Üniversitesi", "url": "https://www.ieu.edu.tr/"},
+      {"name": "Manisa Celal Bayar Üniversitesi", "url": "https://mcbu.edu.tr/"},
+      {"name": "İzmir Kâtip Çelebi Üniversitesi", "url": "https://ikcu.edu.tr/"}
+    ]
+  },
+  {
+    "id": "ankara",
+    "tr": "Ankara",
+    "en": "Ankara",
+    "lon": 32.86,
+    "lat": 39.93,
+    "universities": [
+      {"name": "Ankara Yıldırım Beyazıt Üniversitesi", "url": "https://aybu.edu.tr/"},
+      {"name": "TOBB Ekonomi ve Teknoloji Üniversitesi", "url": "https://www.etu.edu.tr/tr"},
+      {"name": "Ankara Sosyal Bilimler Üniversitesi", "url": "https://www.asbu.edu.tr/"}
+    ]
+  },
+  {
+    "id": "eskisehir",
+    "tr": "Eskişehir",
+    "en": "Eskişehir",
+    "lon": 30.52,
+    "lat": 39.77,
+    "universities": [
+      {"name": "Anadolu Üniversitesi", "url": "https://anadolu.edu.tr/"}
+    ]
+  },
+  {
+    "id": "trabzon",
+    "tr": "Trabzon",
+    "en": "Trabzon",
+    "lon": 39.73,
+    "lat": 41.0,
+    "universities": [
+      {"name": "Karadeniz Teknik Üniversitesi", "url": "https://ktu.edu.tr/"}
+    ]
+  },
+  {
+    "id": "adana",
+    "tr": "Adana",
+    "en": "Adana",
+    "lon": 35.32,
+    "lat": 37.0,
+    "universities": [
+      {"name": "Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi", "url": "https://atu.edu.tr/"}
+    ]
+  },
+  {
+    "id": "gazimagusa",
+    "tr": "Gazimağusa · Kıbrıs",
+    "en": "Famagusta · Cyprus",
+    "lon": 33.95,
+    "lat": 35.13,
+    "universities": [
+      {"name": "Doğu Akdeniz Üniversitesi", "url": "https://www.emu.edu.tr/tr"}
+    ]
+  }
+]

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-12'
+ASSET_VERSION='20260916-13'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -132,10 +132,28 @@ def application():
 def contact():
     return '''<div class="contact-grid"><section class="contact-card"><h2>E-posta</h2><p>Akreditasyon, başvuru ve kurumsal konulardaki sorularınız için:</p><a class="text-link" href="mailto:info@dedak.org">info@dedak.org</a></section><section class="contact-card"><h2>Adres</h2><p>Merkez Mah. Abide-i Hürriyet Cd.<br>Sibel Ap. No:161 Kat:2 Daire:3<br>Şişli / İstanbul</p></section></div><section class="contact-form"><h2>Bize yazın</h2><p>Form, mesajınızı e-posta uygulamanızda taslak olarak açar. Gönderimi açılan uygulamadan tamamlayabilirsiniz.</p><form id="contact-form"><div class="field-row"><div class="field"><label for="name">Ad soyad</label><input id="name" name="name" autocomplete="name" maxlength="120" required></div><div class="field"><label for="email">E-posta adresi</label><input id="email" name="email" type="email" autocomplete="email" maxlength="180" required></div></div><div class="field"><label for="subject">Konu</label><input id="subject" name="subject" maxlength="180" required></div><div class="field"><label for="message">Mesajınız</label><textarea id="message" name="message" maxlength="3000" required></textarea></div><p class="help">Bu form mesajınızı sunucuya kaydetmez. Çalışması için cihazınızda bir e-posta uygulaması tanımlı olmalıdır.</p><button class="button" type="submit">E-posta taslağı oluştur</button><p id="form-status" class="help" role="status" aria-live="polite"></p></form></section>'''
 
+def university_map(lang):
+    en=lang=='en'
+    locations=json.loads((ROOT/'content/university-map.json').read_text(encoding='utf-8'))
+    points=[];popups=[]
+    for location in locations:
+        name=location['en' if en else 'tr'];identifier=location['id']
+        x=(location['lon']-25.5)/20*100;y=(43-location['lat'])/9*100
+        point_label=(f'Show universities in {name}' if en else f'{name} konumundaki üniversiteleri göster')
+        points.append(f'<button class="map-point" type="button" data-map-point data-label="{esc(name)}" aria-label="{esc(point_label)}" aria-expanded="false" aria-controls="map-popup-{identifier}" style="--map-x:{x:.2f}%;--map-y:{y:.2f}%"></button>')
+        links=''.join(f'<li><a href="{esc(item["url"])}">{esc(item["name"])}</a></li>' for item in location['universities'])
+        close_label='Close' if en else 'Kapat'
+        popups.append(f'<div class="map-popup" id="map-popup-{identifier}" role="group" aria-label="{esc(name)}" hidden><button class="map-popup-close" type="button" data-map-popup-close aria-label="{close_label}">×</button><h3>{esc(name)}</h3><ul>{links}</ul></div>')
+    title='Accredited universities on the map' if en else 'Akredite üniversiteler haritası'
+    help_text='Select a city point to see university links.' if en else 'Üniversite bağlantılarını görmek için bir şehir noktasını seçin.'
+    note='Eastern Mediterranean University is shown in Famagusta, Cyprus.' if en else 'Doğu Akdeniz Üniversitesi, Gazimağusa/Kıbrıs noktasında gösterilmiştir.'
+    close_label='Close map' if en else 'Haritayı kapat'
+    return f'<dialog class="university-map-dialog" data-university-map aria-labelledby="university-map-title"><div class="map-dialog-header"><div><span class="map-kicker">DEDAK</span><h2 id="university-map-title">{title}</h2></div><button class="map-dialog-close" type="button" data-map-close aria-label="{close_label}">×</button></div><p class="map-help">{help_text}</p><div class="map-board"><div class="map-stage"><img src="assets/turkey-map.svg?v={ASSET_VERSION}" alt="" aria-hidden="true">'+''.join(points)+'</div><div class="map-popup-layer">'+''.join(popups)+f'</div></div><p class="map-note">{note}</p></dialog>'
+
 def program_records(p,lang='tr'):
     records=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
     en=lang=='en'
-    intro=('<p>English preparatory programs accredited by DEDAK and their evaluation periods.</p>' if en else '<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri.</p>')
+    intro=('<p>English preparatory programs accredited by DEDAK and their evaluation periods. To see the universities on a map, <button type="button" class="map-inline-trigger" data-map-open>click here</button>.</p>' if en else '<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri. Üniversiteleri harita üzerinde görmek için <button type="button" class="map-inline-trigger" data-map-open>tıklayın</button>.</p>')
     translations={'Yabancı Diller Yüksekokulu İngilizce Hazırlık Programı':'School of Foreign Languages English Preparatory Program','Yabancı Diller Yüksekokulu Hazırlık Programı':'School of Foreign Languages Preparatory Program','Temel İngilizce Bölümü':'Department of Basic English','İngilizce Hazırlık Programı':'English Preparatory Program','İngilizce Hazırlık Programı — Lisans':'English Preparatory Program — Undergraduate','Zorunlu İngilizce Hazırlık Programı':'Compulsory English Preparatory Program'}
     items=[]
     for number,name,program,evaluation,period in records:
@@ -144,7 +162,7 @@ def program_records(p,lang='tr'):
     headings=('<th scope="col">University and program</th><th scope="col">Last evaluation period</th><th scope="col">Accreditation validity</th>' if en else '<th scope="col">Üniversite ve program</th><th scope="col">Son değerlendirme dönemi</th><th scope="col">Akreditasyon geçerlilik süresi</th>')
     table='<div class="program-table-wrap"><table class="program-table"><colgroup><col style="width:51%"><col style="width:19%"><col style="width:30%"></colgroup><thead><tr>'+headings+'</tr></thead><tbody>'+''.join(items)+'</tbody></table></div>'
     summary='View the original program list' if en else 'Orijinal program listesini görüntüle'
-    return intro+table+'<details hidden><summary>'+summary+'</summary>'+figures(p)+'</details>'
+    return intro+table+university_map(lang)+'<details hidden><summary>'+summary+'</summary>'+figures(p)+'</details>'
 
 def institutions_table():
     institutions=json.loads((ROOT/'content/in-progress-institutions.json').read_text(encoding='utf-8'))

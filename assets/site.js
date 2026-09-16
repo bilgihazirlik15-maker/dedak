@@ -26,6 +26,53 @@ menuButton?.addEventListener('click',()=>{const open=navigation.classList.toggle
 document.addEventListener('click',event=>{if(!event.target.closest('.header'))closeMenu();});
 window.matchMedia('(min-width:641px)').addEventListener('change',event=>{if(event.matches){closeMenu();closeSubmenus();}});
 
+const mapDialog=document.querySelector('[data-university-map]');
+const mapTrigger=document.querySelector('[data-map-open]');
+if(mapDialog&&mapTrigger){
+  const board=mapDialog.querySelector('.map-board');
+  const stage=mapDialog.querySelector('.map-stage');
+  const points=[...mapDialog.querySelectorAll('[data-map-point]')];
+  let activePoint;
+  function closeMapPopup(){
+    points.forEach(point=>point.setAttribute('aria-expanded','false'));
+    mapDialog.querySelectorAll('.map-popup').forEach(popup=>popup.hidden=true);
+    activePoint=undefined;
+  }
+  function positionMapPopup(point,popup){
+    if(window.matchMedia('(max-width:640px)').matches){popup.style.left='';popup.style.top='';return;}
+    const boardBox=board.getBoundingClientRect();
+    const pointBox=point.getBoundingClientRect();
+    let left=pointBox.right-boardBox.left+12;
+    let top=pointBox.bottom-boardBox.top+9;
+    if(left+popup.offsetWidth>board.clientWidth-8)left=pointBox.left-boardBox.left-popup.offsetWidth-12;
+    if(top+popup.offsetHeight>board.clientHeight-8)top=pointBox.top-boardBox.top-popup.offsetHeight-9;
+    popup.style.left=`${Math.max(8,left)}px`;
+    popup.style.top=`${Math.max(8,top)}px`;
+  }
+  mapTrigger.addEventListener('click',()=>{mapDialog.showModal();mapDialog.querySelector('[data-map-close]').focus();});
+  mapDialog.querySelector('[data-map-close]').addEventListener('click',()=>mapDialog.close());
+  mapDialog.addEventListener('close',()=>{closeMapPopup();mapTrigger.focus();});
+  mapDialog.addEventListener('click',event=>{if(event.target===mapDialog)mapDialog.close();});
+  stage.addEventListener('click',event=>{if(event.target===stage||event.target.tagName==='IMG')closeMapPopup();});
+  points.forEach(point=>point.addEventListener('click',()=>{
+    const popup=mapDialog.querySelector(`#${point.getAttribute('aria-controls')}`);
+    closeMapPopup();
+    point.setAttribute('aria-expanded','true');
+    popup.hidden=false;
+    activePoint=point;
+    positionMapPopup(point,popup);
+    popup.querySelector('a')?.focus();
+  }));
+  mapDialog.querySelectorAll('[data-map-popup-close]').forEach(button=>button.addEventListener('click',()=>{
+    const point=activePoint;
+    closeMapPopup();
+    point?.focus();
+  }));
+  window.addEventListener('resize',()=>{
+    if(activePoint){const popup=mapDialog.querySelector(`#${activePoint.getAttribute('aria-controls')}`);positionMapPopup(activePoint,popup);}
+  });
+}
+
 document.querySelectorAll('[data-carousel]').forEach(carousel=>{
   const slides=[...carousel.querySelectorAll('.announcement-slide')];
   const controls=carousel.querySelector('.carousel-controls');

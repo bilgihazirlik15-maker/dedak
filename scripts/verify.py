@@ -30,6 +30,13 @@ for path in OUT.rglob('*.html'):
         actual=[(row.select_one('.program-index').get_text(strip=True),row.select_one('.program-identity strong').get_text(' ',strip=True),*[cell.get_text(' ',strip=True) for cell in row.select('td')]) for row in rows]
         if actual!=[(number,name,evaluation,period) for number,name,_,evaluation,period in expected]:errors.append(f'{path}: accredited program table differs from source data')
         if not soup.select_one('details[hidden] > summary'):errors.append(f'{path}: original program list must remain hidden')
+        locations=json.loads((ROOT/'content/university-map.json').read_text(encoding='utf-8'))
+        source_names={name for _,name,_,_,_ in expected}
+        map_names=[a.get_text(' ',strip=True) for a in soup.select('.map-popup a[href]')]
+        if set(map_names)!=source_names or len(map_names)!=len(source_names):errors.append(f'{path}: map universities differ from accredited programs')
+        if len(soup.select('[data-map-point]'))!=len(locations) or not soup.select_one('[data-map-open]') or not soup.select_one('dialog[data-university-map]'):errors.append(f'{path}: incomplete interactive map')
+        for point in soup.select('[data-map-point]'):
+            if not soup.find(id=point.get('aria-controls')):errors.append(f'{path}: map point has no popup')
     if path.name=='akreditasyon.html':
         first=soup.select_one('main article').find(['h2','p'])
         if first and first.get_text(' ',strip=True).casefold().replace('\u0307','') in {'akreditasyon','accreditation'}:errors.append(f'{path}: repeated accreditation heading')
