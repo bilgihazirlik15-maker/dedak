@@ -1,77 +1,14 @@
 [
-  {
-    "id": "istanbul",
-    "tr": "İstanbul",
-    "en": "Istanbul",
-    "lon": 28.98,
-    "lat": 41.01,
-    "universities": [
-      {"name": "Altınbaş Üniversitesi", "url": "https://www.altinbas.edu.tr/tr"},
-      {"name": "İstanbul Kültür Üniversitesi", "url": "https://iku.edu.tr/"}
-    ]
-  },
-  {
-    "id": "izmir-manisa",
-    "tr": "İzmir · Manisa",
-    "en": "Izmir · Manisa",
-    "lon": 27.4,
-    "lat": 38.5,
-    "universities": [
-      {"name": "İzmir Ekonomi Üniversitesi", "url": "https://www.ieu.edu.tr/"},
-      {"name": "Manisa Celal Bayar Üniversitesi", "url": "https://mcbu.edu.tr/"},
-      {"name": "İzmir Kâtip Çelebi Üniversitesi", "url": "https://ikcu.edu.tr/"}
-    ]
-  },
-  {
-    "id": "ankara",
-    "tr": "Ankara",
-    "en": "Ankara",
-    "lon": 32.86,
-    "lat": 39.93,
-    "universities": [
-      {"name": "Ankara Yıldırım Beyazıt Üniversitesi", "url": "https://aybu.edu.tr/"},
-      {"name": "TOBB Ekonomi ve Teknoloji Üniversitesi", "url": "https://www.etu.edu.tr/tr"},
-      {"name": "Ankara Sosyal Bilimler Üniversitesi", "url": "https://www.asbu.edu.tr/"}
-    ]
-  },
-  {
-    "id": "eskisehir",
-    "tr": "Eskişehir",
-    "en": "Eskişehir",
-    "lon": 30.52,
-    "lat": 39.77,
-    "universities": [
-      {"name": "Anadolu Üniversitesi", "url": "https://anadolu.edu.tr/"}
-    ]
-  },
-  {
-    "id": "trabzon",
-    "tr": "Trabzon",
-    "en": "Trabzon",
-    "lon": 39.73,
-    "lat": 41.0,
-    "universities": [
-      {"name": "Karadeniz Teknik Üniversitesi", "url": "https://ktu.edu.tr/"}
-    ]
-  },
-  {
-    "id": "adana",
-    "tr": "Adana",
-    "en": "Adana",
-    "lon": 35.32,
-    "lat": 37.0,
-    "universities": [
-      {"name": "Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi", "url": "https://atu.edu.tr/"}
-    ]
-  },
-  {
-    "id": "gazimagusa",
-    "tr": "Gazimağusa · Kıbrıs",
-    "en": "Famagusta · Cyprus",
-    "lon": 33.95,
-    "lat": 35.13,
-    "universities": [
-      {"name": "Doğu Akdeniz Üniversitesi", "url": "https://www.emu.edu.tr/tr"}
-    ]
-  }
+  {"id":"altinbas","name":"Altınbaş Üniversitesi","city_tr":"İstanbul","city_en":"Istanbul","lon":28.55,"lat":41.18,"url":"https://www.altinbas.edu.tr/tr"},
+  {"id":"istanbul-kultur","name":"İstanbul Kültür Üniversitesi","city_tr":"İstanbul","city_en":"Istanbul","lon":29.38,"lat":40.77,"url":"https://iku.edu.tr/"},
+  {"id":"izmir-ekonomi","name":"İzmir Ekonomi Üniversitesi","city_tr":"İzmir","city_en":"Izmir","lon":26.67,"lat":38.14,"url":"https://www.ieu.edu.tr/"},
+  {"id":"manisa-celal-bayar","name":"Manisa Celal Bayar Üniversitesi","city_tr":"Manisa","city_en":"Manisa","lon":28.08,"lat":38.79,"url":"https://mcbu.edu.tr/"},
+  {"id":"izmir-katip-celebi","name":"İzmir Kâtip Çelebi Üniversitesi","city_tr":"İzmir","city_en":"Izmir","lon":27.22,"lat":38.77,"url":"https://ikcu.edu.tr/"},
+  {"id":"ankara-yildirim-beyazit","name":"Ankara Yıldırım Beyazıt Üniversitesi","city_tr":"Ankara","city_en":"Ankara","lon":33.35,"lat":40.32,"url":"https://aybu.edu.tr/"},
+  {"id":"tobb-etu","name":"TOBB Ekonomi ve Teknoloji Üniversitesi","city_tr":"Ankara","city_en":"Ankara","lon":32.25,"lat":39.65,"url":"https://www.etu.edu.tr/tr"},
+  {"id":"ankara-sosyal-bilimler","name":"Ankara Sosyal Bilimler Üniversitesi","city_tr":"Ankara","city_en":"Ankara","lon":33.45,"lat":39.60,"url":"https://www.asbu.edu.tr/"},
+  {"id":"anadolu","name":"Anadolu Üniversitesi","city_tr":"Eskişehir","city_en":"Eskişehir","lon":30.52,"lat":39.77,"url":"https://anadolu.edu.tr/"},
+  {"id":"karadeniz-teknik","name":"Karadeniz Teknik Üniversitesi","city_tr":"Trabzon","city_en":"Trabzon","lon":39.73,"lat":41.0,"url":"https://ktu.edu.tr/"},
+  {"id":"adana-alparslan-turkes","name":"Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi","city_tr":"Adana","city_en":"Adana","lon":35.32,"lat":37.0,"url":"https://atu.edu.tr/"},
+  {"id":"dogu-akdeniz","name":"Doğu Akdeniz Üniversitesi","city_tr":"Gazimağusa · Kıbrıs","city_en":"Famagusta · Cyprus","lon":33.95,"lat":35.13,"url":"https://www.emu.edu.tr/tr"}
 ]

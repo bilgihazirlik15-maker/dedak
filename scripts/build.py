@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-14'
+ASSET_VERSION='20260916-15'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -137,16 +137,16 @@ def university_map(lang):
     locations=json.loads((ROOT/'content/university-map.json').read_text(encoding='utf-8'))
     points=[];popups=[]
     for location in locations:
-        name=location['en' if en else 'tr'];identifier=location['id']
+        name=location['name'];city=location['city_en' if en else 'city_tr'];identifier=location['id']
         x=(location['lon']-25.5)/20*100;y=(43-location['lat'])/9*100
-        point_label=(f'Show universities in {name}' if en else f'{name} konumundaki üniversiteleri göster')
+        point_label=(f'Show {name}' if en else f'{name} bağlantısını göster')
         points.append(f'<button class="map-point" type="button" data-map-point data-label="{esc(name)}" aria-label="{esc(point_label)}" aria-expanded="false" aria-controls="map-popup-{identifier}" style="--map-x:{x:.2f}%;--map-y:{y:.2f}%"></button>')
-        links=''.join(f'<li><a href="{esc(item["url"])}">{esc(item["name"])}</a></li>' for item in location['universities'])
+        links=f'<li><a href="{esc(location["url"])}">{esc(name)}</a></li>'
         close_label='Close' if en else 'Kapat'
-        popups.append(f'<div class="map-popup" id="map-popup-{identifier}" role="group" aria-label="{esc(name)}" hidden><button class="map-popup-close" type="button" data-map-popup-close aria-label="{close_label}">×</button><h3>{esc(name)}</h3><ul>{links}</ul></div>')
+        popups.append(f'<div class="map-popup" id="map-popup-{identifier}" role="group" aria-label="{esc(name)}" hidden><button class="map-popup-close" type="button" data-map-popup-close aria-label="{close_label}">×</button><h3>{esc(city)}</h3><ul>{links}</ul></div>')
     title='Accredited universities on the map' if en else 'Akredite üniversiteler haritası'
-    help_text='Select a city point to see university links.' if en else 'Üniversite bağlantılarını görmek için bir şehir noktasını seçin.'
-    note='Eastern Mediterranean University is shown in Famagusta, Cyprus.' if en else 'Doğu Akdeniz Üniversitesi, Gazimağusa/Kıbrıs noktasında gösterilmiştir.'
+    help_text='Select a university point to open its link.' if en else 'Bağlantısını görmek için bir üniversite noktasını seçin.'
+    note='Nearby points are spaced apart for readability. Eastern Mediterranean University is shown in Famagusta, Cyprus.' if en else 'Yakın noktalar okunabilirlik için birbirinden ayrılmıştır. Doğu Akdeniz Üniversitesi, Gazimağusa/Kıbrıs noktasında gösterilmiştir.'
     source=('Province boundaries: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).' if en else 'İl sınırları: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).')
     close_label='Close map' if en else 'Haritayı kapat'
     return f'<dialog class="university-map-dialog" data-university-map aria-labelledby="university-map-title"><div class="map-dialog-header"><div><span class="map-kicker">DEDAK</span><h2 id="university-map-title">{title}</h2></div><button class="map-dialog-close" type="button" data-map-close aria-label="{close_label}">×</button></div><p class="map-help">{help_text}</p><div class="map-board"><div class="map-stage"><img src="assets/turkey-map.svg?v={ASSET_VERSION}" alt="" aria-hidden="true">'+''.join(points)+'</div><div class="map-popup-layer">'+''.join(popups)+f'</div></div><p class="map-note">{note} {source}</p></dialog>'

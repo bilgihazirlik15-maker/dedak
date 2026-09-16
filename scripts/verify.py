@@ -36,7 +36,8 @@ for path in OUT.rglob('*.html'):
         if set(map_names)!=source_names or len(map_names)!=len(source_names):errors.append(f'{path}: map universities differ from accredited programs')
         if len(soup.select('[data-map-point]'))!=len(locations) or not soup.select_one('[data-map-open]') or not soup.select_one('dialog[data-university-map]'):errors.append(f'{path}: incomplete interactive map')
         for point in soup.select('[data-map-point]'):
-            if not soup.find(id=point.get('aria-controls')):errors.append(f'{path}: map point has no popup')
+            popup=soup.find(id=point.get('aria-controls'))
+            if not popup or len(popup.select('a[href]'))!=1:errors.append(f'{path}: each map point must link to one university')
     if path.name=='akreditasyon.html':
         first=soup.select_one('main article').find(['h2','p'])
         if first and first.get_text(' ',strip=True).casefold().replace('\u0307','') in {'akreditasyon','accreditation'}:errors.append(f'{path}: repeated accreditation heading')
