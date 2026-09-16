@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-13'
+ASSET_VERSION='20260916-14'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -147,8 +147,9 @@ def university_map(lang):
     title='Accredited universities on the map' if en else 'Akredite üniversiteler haritası'
     help_text='Select a city point to see university links.' if en else 'Üniversite bağlantılarını görmek için bir şehir noktasını seçin.'
     note='Eastern Mediterranean University is shown in Famagusta, Cyprus.' if en else 'Doğu Akdeniz Üniversitesi, Gazimağusa/Kıbrıs noktasında gösterilmiştir.'
+    source=('Province boundaries: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).' if en else 'İl sınırları: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).')
     close_label='Close map' if en else 'Haritayı kapat'
-    return f'<dialog class="university-map-dialog" data-university-map aria-labelledby="university-map-title"><div class="map-dialog-header"><div><span class="map-kicker">DEDAK</span><h2 id="university-map-title">{title}</h2></div><button class="map-dialog-close" type="button" data-map-close aria-label="{close_label}">×</button></div><p class="map-help">{help_text}</p><div class="map-board"><div class="map-stage"><img src="assets/turkey-map.svg?v={ASSET_VERSION}" alt="" aria-hidden="true">'+''.join(points)+'</div><div class="map-popup-layer">'+''.join(popups)+f'</div></div><p class="map-note">{note}</p></dialog>'
+    return f'<dialog class="university-map-dialog" data-university-map aria-labelledby="university-map-title"><div class="map-dialog-header"><div><span class="map-kicker">DEDAK</span><h2 id="university-map-title">{title}</h2></div><button class="map-dialog-close" type="button" data-map-close aria-label="{close_label}">×</button></div><p class="map-help">{help_text}</p><div class="map-board"><div class="map-stage"><img src="assets/turkey-map.svg?v={ASSET_VERSION}" alt="" aria-hidden="true">'+''.join(points)+'</div><div class="map-popup-layer">'+''.join(popups)+f'</div></div><p class="map-note">{note} {source}</p></dialog>'
 
 def program_records(p,lang='tr'):
     records=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
