@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-6'
+ASSET_VERSION='20260916-7'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -132,7 +132,7 @@ def program_records(p):
     items=[]
     for number,name,program,evaluation,period in records:
         items.append(f'<section class="program-record"><span class="eyebrow">Program {esc(number)}</span><h2>{esc(name)}</h2><p>{esc(program)}</p><dl><div><dt>Son değerlendirme dönemi</dt><dd>{esc(evaluation)}</dd></div><div><dt>Akreditasyon geçerlilik süresi</dt><dd>{esc(period)}</dd></div></dl></section>')
-    return intro+''.join(items)+'<details><summary>Orijinal program listesini görüntüle</summary>'+figures(p)+'</details>'
+    return intro+''.join(items)+'<details hidden><summary>Orijinal program listesini görüntüle</summary>'+figures(p)+'</details>'
 
 def content_for(p):
     s=p['slug']
