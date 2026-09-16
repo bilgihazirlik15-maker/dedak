@@ -88,7 +88,6 @@ body,.header{background:var(--page)}
 .programs-page{padding-top:44px}
 .programs-page .page-title{min-height:0;margin-bottom:18px}
 .programs-page .prose>p{margin-bottom:15px}
-.programs-page .notice{margin-bottom:22px}
 .program-table-wrap{overflow:hidden;border:1px solid #b9d3e7;border-radius:14px;background:#fff;box-shadow:0 12px 32px #183e6014}
 .programs-page .prose .program-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:.9rem}
 .programs-page .program-table thead th{padding:16px 18px;border:0;background:#194878;color:#fff;text-align:left;font-weight:700;line-height:1.35;vertical-align:middle}

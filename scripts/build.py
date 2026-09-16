@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-9'
+ASSET_VERSION='20260916-10'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -129,7 +129,7 @@ def contact():
 def program_records(p,lang='tr'):
     records=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
     en=lang=='en'
-    intro=('<p>English preparatory programs accredited by DEDAK and their evaluation periods.</p><div class="notice">This list also includes previous accreditation periods. Check the validity dates for each record.</div>' if en else '<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri.</p><div class="notice">Liste geçmiş dönem kayıtlarını da içerir. Her programın akreditasyon geçerlilik tarihini ilgili kayıttan kontrol edin.</div>')
+    intro=('<p>English preparatory programs accredited by DEDAK and their evaluation periods.</p>' if en else '<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri.</p>')
     translations={'Yabancı Diller Yüksekokulu İngilizce Hazırlık Programı':'School of Foreign Languages English Preparatory Program','Yabancı Diller Yüksekokulu Hazırlık Programı':'School of Foreign Languages Preparatory Program','Temel İngilizce Bölümü':'Department of Basic English','İngilizce Hazırlık Programı':'English Preparatory Program','İngilizce Hazırlık Programı — Lisans':'English Preparatory Program — Undergraduate','Zorunlu İngilizce Hazırlık Programı':'Compulsory English Preparatory Program'}
     items=[]
     for number,name,program,evaluation,period in records:
