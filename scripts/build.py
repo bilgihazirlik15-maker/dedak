@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-8'
+ASSET_VERSION='20260916-9'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -126,13 +126,19 @@ def application():
 def contact():
     return '''<div class="contact-grid"><section class="contact-card"><h2>E-posta</h2><p>Akreditasyon, başvuru ve kurumsal konulardaki sorularınız için:</p><a class="text-link" href="mailto:info@dedak.org">info@dedak.org</a></section><section class="contact-card"><h2>Adres</h2><p>Merkez Mah. Abide-i Hürriyet Cd.<br>Sibel Ap. No:161 Kat:2 Daire:3<br>Şişli / İstanbul</p></section></div><section class="contact-form"><h2>Bize yazın</h2><p>Form, mesajınızı e-posta uygulamanızda taslak olarak açar. Gönderimi açılan uygulamadan tamamlayabilirsiniz.</p><form id="contact-form"><div class="field-row"><div class="field"><label for="name">Ad soyad</label><input id="name" name="name" autocomplete="name" maxlength="120" required></div><div class="field"><label for="email">E-posta adresi</label><input id="email" name="email" type="email" autocomplete="email" maxlength="180" required></div></div><div class="field"><label for="subject">Konu</label><input id="subject" name="subject" maxlength="180" required></div><div class="field"><label for="message">Mesajınız</label><textarea id="message" name="message" maxlength="3000" required></textarea></div><p class="help">Bu form mesajınızı sunucuya kaydetmez. Çalışması için cihazınızda bir e-posta uygulaması tanımlı olmalıdır.</p><button class="button" type="submit">E-posta taslağı oluştur</button><p id="form-status" class="help" role="status" aria-live="polite"></p></form></section>'''
 
-def program_records(p):
+def program_records(p,lang='tr'):
     records=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
-    intro='<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri.</p><div class="notice">Liste geçmiş dönem kayıtlarını da içerir. Her programın akreditasyon geçerlilik tarihini ilgili kayıttan kontrol edin.</div>'
+    en=lang=='en'
+    intro=('<p>English preparatory programs accredited by DEDAK and their evaluation periods.</p><div class="notice">This list also includes previous accreditation periods. Check the validity dates for each record.</div>' if en else '<p>DEDAK tarafından akreditasyon verilen İngilizce hazırlık programları ve değerlendirme dönemleri.</p><div class="notice">Liste geçmiş dönem kayıtlarını da içerir. Her programın akreditasyon geçerlilik tarihini ilgili kayıttan kontrol edin.</div>')
+    translations={'Yabancı Diller Yüksekokulu İngilizce Hazırlık Programı':'School of Foreign Languages English Preparatory Program','Yabancı Diller Yüksekokulu Hazırlık Programı':'School of Foreign Languages Preparatory Program','Temel İngilizce Bölümü':'Department of Basic English','İngilizce Hazırlık Programı':'English Preparatory Program','İngilizce Hazırlık Programı — Lisans':'English Preparatory Program — Undergraduate','Zorunlu İngilizce Hazırlık Programı':'Compulsory English Preparatory Program'}
     items=[]
     for number,name,program,evaluation,period in records:
-        items.append(f'<section class="program-record"><span class="eyebrow">Program {esc(number)}</span><h2>{esc(name)}</h2><p>{esc(program)}</p><dl><div><dt>Son değerlendirme dönemi</dt><dd>{esc(evaluation)}</dd></div><div><dt>Akreditasyon geçerlilik süresi</dt><dd>{esc(period)}</dd></div></dl></section>')
-    return intro+''.join(items)+'<details hidden><summary>Orijinal program listesini görüntüle</summary>'+figures(p)+'</details>'
+        label=translations.get(program,program) if en else program
+        items.append('<tr><th scope="row"><div class="program-identity"><b class="program-index">'+esc(number)+'</b><div><strong>'+esc(name)+'</strong><small>'+esc(label)+'</small></div></div></th><td data-label="'+('Last evaluation period' if en else 'Son değerlendirme dönemi')+'">'+esc(evaluation)+'</td><td data-label="'+('Accreditation validity' if en else 'Akreditasyon geçerlilik süresi')+'">'+esc(period)+'</td></tr>')
+    headings=('<th scope="col">University and program</th><th scope="col">Last evaluation period</th><th scope="col">Accreditation validity</th>' if en else '<th scope="col">Üniversite ve program</th><th scope="col">Son değerlendirme dönemi</th><th scope="col">Akreditasyon geçerlilik süresi</th>')
+    table='<div class="program-table-wrap"><table class="program-table"><colgroup><col style="width:51%"><col style="width:19%"><col style="width:30%"></colgroup><thead><tr>'+headings+'</tr></thead><tbody>'+''.join(items)+'</tbody></table></div>'
+    summary='View the original program list' if en else 'Orijinal program listesini görüntüle'
+    return intro+table+'<details hidden><summary>'+summary+'</summary>'+figures(p)+'</details>'
 
 def institutions_table():
     institutions=json.loads((ROOT/'content/in-progress-institutions.json').read_text(encoding='utf-8'))
@@ -158,6 +164,7 @@ def content_for(p):
 
 def inner(p):
     page_class='wrap inner-page institutions-page' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'wrap inner-page'
+    if p['slug']=='akredite-edilen-programlar':page_class='wrap inner-page programs-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def build_all():

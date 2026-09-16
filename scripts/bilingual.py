@@ -115,7 +115,8 @@ def add_languages(out,b):
 
     def english_article(slug,current):
         p=localized[slug]
-        if slug in ['iletisim','kurucu-kurul','akredite-edilen-programlar','akreditasyon-sürecinde-olan-kurumlar','galeri']:return current
+        if slug in ['iletisim','kurucu-kurul','akreditasyon-sürecinde-olan-kurumlar','galeri']:return current
+        if slug=='akredite-edilen-programlar':return b['program_records'](p,lang='en')
         if slug=='akreditasyon-başvurusu':
             template=BeautifulSoup(current,'html.parser')
             template.select_one('details > div').replace_with(BeautifulSoup('<div>'+clean(p)+'</div>','html.parser'))
@@ -147,7 +148,7 @@ def add_languages(out,b):
             article=en.select_one('article.prose')
             current=article.decode_contents()
             article.clear();article.append(BeautifulSoup(english_article(slug,current),'html.parser'))
-            if article.select('figure,.resource'):
+            if slug!='akredite-edilen-programlar' and article.select('figure,.resource'):
                 for document,note_text in [(en,'Downloads and source images are provided in their original language.'),(tr,'İndirilebilir belgeler ve kaynak görseller özgün dillerinde sunulmaktadır.')]:
                     note=document.new_tag('p',attrs={'class':'help'});note.string=note_text;document.select_one('article.prose').append(note)
         else:

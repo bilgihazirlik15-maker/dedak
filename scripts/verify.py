@@ -24,6 +24,12 @@ for path in OUT.rglob('*.html'):
         expected=json.loads((ROOT/'content/in-progress-institutions.json').read_text(encoding='utf-8'))
         actual=[(cells[0].get_text(' ',strip=True),cells[1].get_text(' ',strip=True)) for row in soup.select('.institution-table tbody tr') if len(cells:=row.select('td'))==2]
         if actual!=[(name,f'Şubat / February {year}') for name,year in expected]:errors.append(f'{path}: institution table differs from source data')
+    if path.name=='akredite-edilen-programlar.html':
+        expected=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
+        rows=soup.select('.program-table tbody tr')
+        actual=[(row.select_one('.program-index').get_text(strip=True),row.select_one('.program-identity strong').get_text(' ',strip=True),*[cell.get_text(' ',strip=True) for cell in row.select('td')]) for row in rows]
+        if actual!=[(number,name,evaluation,period) for number,name,_,evaluation,period in expected]:errors.append(f'{path}: accredited program table differs from source data')
+        if not soup.select_one('details[hidden] > summary'):errors.append(f'{path}: original program list must remain hidden')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:
