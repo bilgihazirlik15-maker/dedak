@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-5'
+ASSET_VERSION='20260916-6'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -151,7 +151,8 @@ def content_for(p):
     return clean_content(p)+figures(p)+resources(p)
 
 def inner(p):
-    return '<main id="main" class="wrap inner-page"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
+    article_class='prose centered-table' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'prose'
+    return '<main id="main" class="wrap inner-page"><h1 class="page-title">'+esc(title(p))+'</h1><article class="'+article_class+'">'+content_for(p)+'</article></main>'
 
 def build_all():
     write_home()

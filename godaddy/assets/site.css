@@ -73,6 +73,8 @@ body,.header{background:var(--page)}
 .footer-bottom span{grid-column:1;grid-row:1}
 .footer-bottom a{grid-column:3;grid-row:1;justify-self:end}
 @media screen and (max-width:640px){.footer .wrap{column-gap:6px}.footer-email{font-size:.72rem}.footer-bottom{font-size:.7rem}}
+.centered-table figure{width:min(603px,100%);margin-inline:auto}
+.centered-table figcaption{text-align:center}
 .notice,.resource>span:first-child{background:#dceaf5}
 .resource:hover{background:#d4e7f5}
 .brand img{background:transparent}
