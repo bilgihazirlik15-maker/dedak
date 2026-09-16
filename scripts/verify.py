@@ -14,6 +14,8 @@ for path in OUT.rglob('*.html'):
     choices=soup.select('.language-switch a[hreflang]')
     if {a.get('hreflang') for a in choices}!={'tr','en'}:errors.append(f'{path}: missing language choices')
     for a in choices:
+        expected_label='Türkçe' if a['hreflang']=='tr' else 'English'
+        if a.get_text(' ',strip=True)!=expected_label:errors.append(f'{path}: unexpected language switch label')
         expected=OUT/('en' if a['hreflang']=='en' else '')/path.name
         actual=(path.parent/unquote(urlsplit(a['href']).path)).resolve()
         if actual!=expected.resolve():errors.append(f'{path}: wrong language counterpart')

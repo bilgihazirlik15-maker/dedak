@@ -75,7 +75,7 @@ def controls(soup,name,lang,version):
     html='<div class="wrap language-bar"><nav class="language-switch" aria-label="'+('Language' if en else 'Dil seçimi')+'">'
     for code,label,href,flag in links:
         current=' aria-current="true" class="selected"' if code==lang else ''
-        html+=f'<a href="{href}?v={version}" lang="{code}" hreflang="{code}" aria-label="{label}"{current}><img src="{prefix}assets/flag-{flag}.svg" alt="" width="24" height="16" aria-hidden="true"><span>{"TR" if code=="tr" else "EN"}</span><span class="language-name">{label}</span></a>'
+        html+=f'<a href="{href}?v={version}" lang="{code}" hreflang="{code}" aria-label="{label}"{current}><img src="{prefix}assets/flag-{flag}.svg" alt="" width="24" height="16" aria-hidden="true"><span class="language-name">{label}</span></a>'
     html+='</nav></div>'
     soup.select_one('.header').insert(0,BeautifulSoup(html,'html.parser'))
     for code,_,href,_ in links:
