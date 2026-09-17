@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Province boundaries originate with OCHA/HDX COD-AB-TUR (CC BY-IGO).
 # This pinned snapshot is distributed by ttezer/turkiye-harita-verisi.
 PROVINCES = "https://raw.githubusercontent.com/ttezer/turkiye-harita-verisi/83eeb7a1e0a476dde81ada1a62f803231cf16e61/dist/geojson/provinces.geojson"
-COUNTRIES = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
+LAND = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson"
 WIDTH, HEIGHT = 1000, 460
 LON_MIN, LON_MAX = 25.5, 45.5
 LAT_MIN, LAT_MAX = 34.0, 43.0
@@ -42,12 +42,12 @@ def simplify(points, tolerance=.6):
     return [points[i] for i in sorted(keep)]
 
 
-def path(geometry):
+def path(geometry, tolerance=.6):
     polygons = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
     segments = []
     for polygon in polygons:
         for ring in polygon:
-            points = simplify([project(point) for point in ring])
+            points = simplify([project(point) for point in ring], tolerance)
             if len(points) >= 3:
                 segments.append("M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in points) + "Z")
     return "".join(segments)
@@ -55,20 +55,31 @@ def path(geometry):
 
 with urlopen(PROVINCES, timeout=45) as response:
     provinces = json.load(response)["features"]
-with urlopen(COUNTRIES, timeout=45) as response:
-    countries = json.load(response)["features"]
+with urlopen(LAND, timeout=60) as response:
+    land = json.load(response)["features"]
 
 assert len(provinces) == 81
-cyprus = next(feature for feature in countries if feature["properties"]["ADMIN"] == "Cyprus")
+cyprus_candidates = []
+for feature in land:
+    geometry = feature["geometry"]
+    polygons = geometry["coordinates"] if geometry["type"] == "MultiPolygon" else [geometry["coordinates"]]
+    for polygon in polygons:
+        ring = polygon[0]
+        longitudes = [point[0] for point in ring]
+        latitudes = [point[1] for point in ring]
+        if (32.0 < min(longitudes) < 32.5 and 34.4 < max(longitudes) < 35.0
+                and 34.4 < min(latitudes) < 35.0 and 35.5 < max(latitudes) < 36.0):
+            cyprus_candidates.append(polygon)
+assert len(cyprus_candidates) == 1, "Expected one complete Cyprus island outline"
 province_paths = "\n".join(f'<path d="{path(feature["geometry"])}"/>' for feature in provinces)
-cyprus_path = path(cyprus["geometry"])
+cyprus_path = path({"type": "Polygon", "coordinates": cyprus_candidates[0]}, tolerance=.18)
 
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {HEIGHT}" aria-hidden="true">
 <!-- Province boundaries: OCHA/HDX COD-AB-TUR, CC BY-IGO, via {PROVINCES} -->
-<!-- Cyprus coastline: Natural Earth public domain, {COUNTRIES} -->
+<!-- Complete Cyprus island coastline: Natural Earth 1:10m land, public domain, {LAND} -->
 <g fill="#73b3dc" stroke="#fff" stroke-width="1.15" stroke-linejoin="round">
 {province_paths}
-<path d="{cyprus_path}"/>
+<path id="cyprus-island" d="{cyprus_path}"/>
 </g>
 </svg>
 '''

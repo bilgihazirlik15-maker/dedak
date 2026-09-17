@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260917-2'
+ASSET_VERSION='20260917-3'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -144,7 +144,7 @@ def university_map(lang):
         links=f'<li><a href="{esc(location["url"])}">{esc(name)}</a></li>'
         close_label='Close' if en else 'Kapat'
         popups.append(f'<div class="map-popup" id="map-popup-{identifier}" role="group" aria-label="{esc(name)}" hidden><button class="map-popup-close" type="button" data-map-popup-close aria-label="{close_label}">×</button><h3>{esc(city)}</h3><ul>{links}</ul></div>')
-    title='Accredited universities on the map' if en else 'Akredite üniversiteler haritası'
+    title='Accredited Universities Map' if en else 'Akredite Üniversiteler Haritası'
     help_text='Select a university point to open its link.' if en else 'Bağlantısını görmek için bir üniversite noktasını seçin.'
     note='Nearby points are spaced apart for readability. Eastern Mediterranean University is shown in Famagusta, Cyprus.' if en else 'Yakın noktalar okunabilirlik için birbirinden ayrılmıştır. Doğu Akdeniz Üniversitesi, Gazimağusa/Kıbrıs noktasında gösterilmiştir.'
     source=('Province boundaries: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).' if en else 'İl sınırları: <a href="https://data.humdata.org/dataset/cod-ab-tur">OCHA/HDX COD-AB-TUR</a> (CC BY-IGO).')

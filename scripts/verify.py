@@ -2,6 +2,7 @@ from pathlib import Path
 from urllib.parse import urlsplit, unquote
 from bs4 import BeautifulSoup
 import json,zipfile
+from xml.etree import ElementTree
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy'
 errors=[]; count=0; external=set(); menu_signatures={}
@@ -25,6 +26,9 @@ for path in OUT.rglob('*.html'):
         actual=[(cells[0].get_text(' ',strip=True),cells[1].get_text(' ',strip=True)) for row in soup.select('.institution-table tbody tr') if len(cells:=row.select('td'))==2]
         if actual!=[(name,f'Şubat / February {year}') for name,year in expected]:errors.append(f'{path}: institution table differs from source data')
     if path.name=='akredite-edilen-programlar.html':
+        map_heading=soup.select_one('#university-map-title')
+        expected_heading='Accredited Universities Map' if language=='en' else 'Akredite Üniversiteler Haritası'
+        if not map_heading or map_heading.get_text(' ',strip=True)!=expected_heading:errors.append(f'{path}: incorrect university map heading')
         expected=json.loads((ROOT/'content/programs.json').read_text(encoding='utf-8'))
         rows=soup.select('.program-table tbody tr')
         actual=[(row.select_one('.program-index').get_text(strip=True),row.select_one('.program-identity strong').get_text(' ',strip=True),*[cell.get_text(' ',strip=True) for cell in row.select('td')]) for row in rows]
@@ -109,6 +113,9 @@ for path in OUT.rglob('*.html'):
             if not dest.find(id=unquote(u.fragment)):errors.append(f'{path.name}: missing fragment {href}')
         if el.name=='img' and not el.get('alt') and el.get('aria-hidden')!='true':errors.append(f'{path.name}: missing image alt')
     if '\ufffd' in soup.get_text():errors.append(f'{path.name}: text encoding damage')
+map_svg=ElementTree.parse(ROOT/'assets/turkey-map.svg').getroot()
+cyprus_shape=next((element for element in map_svg.iter() if element.get('id')=='cyprus-island'),None)
+if cyprus_shape is None or cyprus_shape.get('d','').count('L')<80:errors.append('Cyprus island outline is incomplete')
 for doc in (OUT/'documents').iterdir():
     raw=doc.read_bytes()
     if doc.suffix=='.pdf' and not raw.startswith(b'%PDF'):errors.append('Invalid PDF '+doc.name)
