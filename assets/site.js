@@ -7,7 +7,6 @@ navigation?.querySelectorAll(':scope > a[href]').forEach(link=>{
   link.addEventListener('pointerdown',()=>markPendingNavigation(link));
   link.addEventListener('pointercancel',clearPendingNavigation);
   link.addEventListener('click',event=>{
-    if(link.target==='_blank'){clearTimeout(directNavigationTimer);setTimeout(clearPendingNavigation,120);return;}
     if(event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
     event.preventDefault();
     markPendingNavigation(link);

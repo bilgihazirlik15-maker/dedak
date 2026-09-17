@@ -86,7 +86,10 @@ for path in OUT.rglob('*.html'):
     if soup.select('a .arrow'):errors.append(f'{path.name}: decorative arrow element inside link')
     for link in soup.select('a[href]'):
         href=urlsplit(link['href'])
-        if link.find_parent(class_='language-switch') or (not href.path and href.fragment) or href.scheme in {'mailto','tel','javascript','data'}:continue
+        if link.find_parent(class_='header'):
+            if link.has_attr('target'):errors.append(f'{path}: header navigation must remain in the same tab: {link["href"]}')
+            continue
+        if (not href.path and href.fragment) or href.scheme in {'mailto','tel','javascript','data'}:continue
         if link.get('target')!='_blank' or not {'noopener','noreferrer'}.issubset(set(link.get('rel',[]))) or link.has_attr('download'):errors.append(f'{path}: link must open safely in a new tab: {link["href"]}')
     if path.name=='index.html':
         carousel=soup.select_one('[data-carousel]')

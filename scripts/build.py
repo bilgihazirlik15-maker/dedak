@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260917-4'
+ASSET_VERSION='20260917-5'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -224,7 +224,11 @@ def open_content_links_in_new_tabs():
         soup=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
         for link in soup.select('a[href]'):
             href=link['href'];parsed=urlsplit(href)
-            if link.find_parent(class_='language-switch') or (not parsed.path and parsed.fragment) or parsed.scheme in {'mailto','tel','javascript','data'}:continue
+            if link.find_parent(class_='header'):
+                link.attrs.pop('target',None)
+                link.attrs.pop('rel',None)
+                continue
+            if (not parsed.path and parsed.fragment) or parsed.scheme in {'mailto','tel','javascript','data'}:continue
             link['target']='_blank'
             link['rel']=sorted(set(link.get('rel',[]))|{'noopener','noreferrer'})
             link.attrs.pop('download',None)
