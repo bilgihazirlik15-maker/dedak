@@ -184,7 +184,7 @@ body,.header{background:var(--page)}
 .home.wrap{width:min(1176px,calc(100% - 48px));max-width:1176px}
 main.home,main.inner-page,main.section{padding-top:30px}
 .home .announcement-preview{width:100%;margin-inline:auto}
-.announcement-banner{position:relative;display:block;overflow:hidden;width:calc(100% - 238px);margin-left:238px;padding:0}
+.announcement-banner{position:relative;display:block;overflow:hidden;width:100%;margin-left:0;padding:0}
 .announcement-track{display:grid;min-height:inherit}
 .announcement-slide{grid-area:1/1;display:flex;align-items:center;justify-content:center;text-align:center;padding:72px 110px;opacity:0;visibility:hidden;transition:opacity .45s ease;pointer-events:none}
 .announcement-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
@@ -216,7 +216,6 @@ main.home,main.inner-page,main.section{padding-top:30px}
 @media screen and (min-width:641px) and (max-width:900px){
   .nav{grid-auto-rows:43px}
 }
-@media screen and (max-width:1136px){.announcement-banner{width:100%;margin-left:0}}
 @media screen and (max-width:640px){
   .home.wrap{width:calc(100% - 38.4px)}
   main.home,main.inner-page,main.section{padding-top:20px}
