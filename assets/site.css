@@ -100,6 +100,33 @@ body,.header{background:var(--page)}
 .program-index{display:inline-grid;place-items:center;flex:none;min-width:32px;min-height:32px;padding:3px 6px;border-radius:8px;background:#dceaf5;color:#194878;font-size:.76rem}
 .program-identity strong{display:block;font-weight:700}
 .program-identity small{display:block;margin-top:3px;color:#526277;font-size:.82rem;line-height:1.4}
+.publications-page .page-title{min-height:0;margin-bottom:14px}
+.publications-page .prose .publication-summary{margin-bottom:16px;color:#526277;font-size:.92rem}
+.publication-table-wrap{overflow:hidden;border:1px solid #b9d3e7;border-radius:14px;background:#fff;box-shadow:0 12px 32px #183e6014}
+.publications-page .prose .publication-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:.91rem}
+.publication-table thead th{padding:15px 18px;border:0;background:#194878;color:#fff;text-align:left;font-weight:700;line-height:1.35}
+.publication-table thead th:nth-child(1){width:17%}.publication-table thead th:nth-child(2){width:55%}.publication-table thead th:nth-child(3){width:9%}.publication-table thead th:nth-child(4){width:19%}
+.publication-table tbody th,.publication-table tbody td{padding:15px 18px;border:0;border-top:1px solid #dceaf5;vertical-align:middle;text-align:left;line-height:1.45}
+.publication-table tbody th{font-weight:600;overflow-wrap:anywhere}
+.publication-table tbody tr:nth-child(even){background:#f3f8fc}
+.publication-table tbody tr:hover{background:#e8f3fb}
+.publication-kind{display:inline-block;padding:5px 9px;border-radius:999px;background:#e1eff9;color:#194878;font-size:.76rem;font-weight:700;white-space:nowrap}
+.publication-title-link{color:#194878;text-decoration:none}
+.publication-title-link:hover{text-decoration:underline;text-underline-offset:3px}
+.publication-action{display:inline-block;padding:7px 11px;border:1px solid #b9d3e7;border-radius:7px;background:#fff;color:#194878;text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap}
+.publication-action:hover{background:#dceaf5;border-color:#80aed0}
+.publication-unavailable{color:#6b7280;font-size:.8rem}
+@media screen and (max-width:700px){
+  .publication-table-wrap{overflow:visible;border:0;background:transparent;box-shadow:none}
+  .publications-page .prose .publication-table,.publication-table tbody{display:block;overflow:visible}
+  .publication-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .publications-page .publication-table tbody tr{display:grid;grid-template-columns:1fr auto;gap:0;margin-bottom:12px;overflow:hidden;border:1px solid #b9d3e7;border-radius:11px;background:#fff;box-shadow:0 5px 16px #183e600d}
+  .publications-page .publication-table tbody th{grid-column:1/-1;grid-row:1;padding:14px 14px 10px;border:0}
+  .publications-page .publication-table tbody td{padding:8px 14px 13px;border:0;border-top:1px solid #dceaf5}
+  .publications-page .publication-table tbody td:first-child{grid-column:1;grid-row:2}
+  .publications-page .publication-table tbody td:nth-of-type(2){grid-column:2;grid-row:2;color:#526277;font-size:.85rem}
+  .publications-page .publication-table tbody td:last-child{grid-column:1/-1;grid-row:3;padding-top:0;border-top:0}
+}
 .map-inline-trigger{display:inline;padding:0;border:0;background:none;color:#194878;font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .map-inline-trigger:hover{color:#102f56}
 .university-map-dialog{width:min(1040px,calc(100% - 32px));max-height:90vh;padding:22px;border:1px solid #b9d3e7;border-radius:18px;background:#fff;color:#233b55;box-shadow:0 24px 70px #102b4a50;overflow:auto}

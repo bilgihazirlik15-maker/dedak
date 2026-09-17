@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260916-15'
+ASSET_VERSION='20260917-1'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -44,7 +44,7 @@ def header(active):
     for slug,label,group in menu:
         selected=active==slug
         duplicated_top_level={'Kurumsal':{'uyelik'},'Belgeler':{'sunumlar-ve-yayınlar'}}
-        children=([slug] if group and slug in by_slug else [])+[s for s in groups.get(group,[]) if s in by_slug and s!=slug and s not in duplicated_top_level.get(group,set())]
+        children=[s for s in groups.get(group,[]) if s in by_slug and s!=slug and s not in duplicated_top_level.get(group,set())]
         if children:
             drop=''.join(f'<a href="{nav_url(s)}">{esc(title(by_slug[s]))}</a>' for s in children)
             current=selected or (active not in menu_slugs and group_for(active)==group)
@@ -170,6 +170,31 @@ def institutions_table():
     rows=''.join('<tr><td>'+esc(name)+'</td><td>Şubat / February '+str(year)+'</td></tr>' for name,year in institutions)
     return '<div class="institution-table-wrap"><table class="institution-table"><colgroup><col style="width:65%"><col style="width:35%"></colgroup><thead><tr><th scope="col">Akreditasyon Sürecinde Olan Kurumlar<br><span>Institutions in the Process of Accreditation</span></th><th scope="col">Süreç Başlangıç Tarihi<br><span>Beginning Date of Process</span></th></tr></thead><tbody>'+rows+'</tbody></table></div>'
 
+def presentation_table(p,lang='tr'):
+    en=lang=='en'
+    entries=BeautifulSoup(p.get('html',''),'html.parser').select('li')
+    assert len(entries)==12, 'Presentation and publication source list changed'
+    years=['2023','','','2013','2014','2015','2016','2017','2018','2018','2019','2019']
+    rows=[]
+    for index,(entry,year) in enumerate(zip(entries,years)):
+        name=entry.get_text(' ',strip=True).replace('D irectors','Directors').replace('Octovber','October').replace('20-21October','20-21 October')
+        link=entry.find('a',href=True)
+        href=link['href'] if link else ''
+        if index==11:href='https://link.springer.com/book/10.1007/978-3-030-21421-0'
+        if href:href=local_link(href)
+        kind=('Publication' if index==11 else 'Presentation' if index<3 else 'Event record') if en else ('Yayın' if index==11 else 'Sunum' if index<3 else 'Etkinlik kaydı')
+        label=esc(name)
+        title_html=f'<a class="publication-title-link" href="{esc(href)}">{label}</a>' if href else f'<span class="publication-title-text">{label}</span>'
+        if href:
+            extension=Path(urlsplit(href).path).suffix.upper().lstrip('.')
+            action=('Open '+extension if en else extension+' aç') if extension in {'PDF','PPTX'} else ('View page' if en else 'Sayfayı aç')
+            action_html=f'<a class="publication-action" href="{esc(href)}">{action}</a>'
+        else:action_html='<span class="publication-unavailable">Link not published</span>' if en else '<span class="publication-unavailable">Bağlantı yayımlanmamış</span>'
+        rows.append(f'<tr><td data-label="{("Type" if en else "Tür")}"><span class="publication-kind">{kind}</span></td><th scope="row">{title_html}</th><td data-label="{("Year" if en else "Yıl")}">{year or "—"}</td><td data-label="{("Link" if en else "Bağlantı")}">{action_html}</td></tr>')
+    headings=('<th scope="col">Type</th><th scope="col">Presentation or publication</th><th scope="col">Year</th><th scope="col">Link</th>' if en else '<th scope="col">Tür</th><th scope="col">Sunum veya yayın</th><th scope="col">Yıl</th><th scope="col">Bağlantı</th>')
+    summary=('<p class="publication-summary">12 records. Available files and web pages open in a new tab.</p>' if en else '<p class="publication-summary">12 kayıt. Mevcut dosyalar ve web sayfaları yeni sekmede açılır.</p>')
+    return summary+'<div class="publication-table-wrap"><table class="publication-table"><thead><tr>'+headings+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
+
 def content_for(p):
     s=p['slug']
     if s=='hakkinda':return '<p>DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.</p>'+cards(groups['Kurumsal'])+'<h2>Kurumsal belge</h2>'+resources(p)
@@ -179,6 +204,7 @@ def content_for(p):
     if s=='duyurular':return '<span class="eyebrow">2027 akreditasyon dönemi</span><h2>DEDAK akreditasyon başvuruları</h2><p>2027 başvuruları 2 Kasım – 1 Aralık 2026 tarihleri arasında kabul edilecektir.</p><p><a class="button" href="akreditasyon-basvurusu.html">Başvuru rehberini inceleyin</a></p>'+clean_content(p)+resources(p)
     if s=='kurucu-kurul':return committees()
     if s=='akredite-edilen-programlar':return program_records(p)
+    if s=='sunumlar-ve-yayınlar':return presentation_table(p)
     if s=='iletisim':return contact()
     if s=='galeri':return '<div class="notice"><h2>DEDAK etkinlik arşivi</h2><p>Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.</p><a class="button" href="iletisim.html">İletişim</a></div>'
     if s in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return resources(p)
@@ -190,6 +216,7 @@ def content_for(p):
 def inner(p):
     page_class='wrap inner-page institutions-page' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'wrap inner-page'
     if p['slug']=='akredite-edilen-programlar':page_class='wrap inner-page programs-page'
+    if p['slug']=='sunumlar-ve-yayınlar':page_class='wrap inner-page publications-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():

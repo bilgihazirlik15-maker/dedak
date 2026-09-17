@@ -117,6 +117,7 @@ def add_languages(out,b):
         p=localized[slug]
         if slug in ['iletisim','kurucu-kurul','akreditasyon-sürecinde-olan-kurumlar','galeri']:return current
         if slug=='akredite-edilen-programlar':return b['program_records'](p,lang='en')
+        if slug=='sunumlar-ve-yayınlar':return b['presentation_table'](p,lang='en')
         if slug=='akreditasyon-başvurusu':
             template=BeautifulSoup(current,'html.parser')
             template.select_one('details > div').replace_with(BeautifulSoup('<div>'+clean(p)+'</div>','html.parser'))

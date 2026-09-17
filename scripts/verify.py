@@ -41,6 +41,10 @@ for path in OUT.rglob('*.html'):
     if path.name=='akreditasyon.html':
         first=soup.select_one('main article').find(['h2','p'])
         if first and first.get_text(' ',strip=True).casefold().replace('\u0307','') in {'akreditasyon','accreditation'}:errors.append(f'{path}: repeated accreditation heading')
+    if path.name=='sunumlar-ve-yayinlar.html':
+        if soup.select('main h2,main h3,main h4'):errors.append(f'{path}: repeated presentations heading')
+        rows=soup.select('.publication-table tbody tr')
+        if len(rows)!=12 or len(soup.select('.publication-title-link'))!=11 or len(soup.select('.publication-unavailable'))!=1:errors.append(f'{path}: incomplete presentations table')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:
@@ -58,6 +62,11 @@ for path in OUT.rglob('*.html'):
         if len(membership_links)!=1 or membership_links[0].parent!=nav:errors.append(f'{path.name}: membership must appear only as a top-level menu item')
         presentations_links=[link for link in nav.select('a[href]') if urlsplit(link['href']).path=='sunumlar-ve-yayinlar.html']
         if len(presentations_links)!=1 or presentations_links[0].parent!=nav:errors.append(f'{path.name}: presentations must appear only as a top-level menu item')
+        for parent_slug in ('hakkinda','akreditasyon','belgeler'):
+            panel=nav.select_one(f'#submenu-{parent_slug}')
+            if panel and any(urlsplit(link['href']).path==f'{parent_slug}.html' for link in panel.select('a[href]')):errors.append(f'{path.name}: {parent_slug} repeats in its submenu')
+        accreditation_panel=nav.select_one('#submenu-akreditasyon')
+        if accreditation_panel and urlsplit(accreditation_panel.select_one('a[href]')['href']).path!='akreditasyon-faaliyetleri-raporu.html':errors.append(f'{path.name}: accreditation submenu must start with activity report')
     for group in soup.select('.nav-group'):
         toggle=group.find('button',class_='submenu-toggle',recursive=False)
         panel=group.find(class_='submenu',recursive=False)
