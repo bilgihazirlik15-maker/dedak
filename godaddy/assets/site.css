@@ -181,24 +181,28 @@ body,.header{background:var(--page)}
 .notice,.resource>span:first-child{background:#dceaf5}
 .resource:hover{background:#d4e7f5}
 .brand img{background:transparent}
-.home{width:100%;max-width:none}
+.home.wrap{width:min(1176px,calc(100% - 48px));max-width:1176px}
 main.home,main.inner-page,main.section{padding-top:30px}
-.home .announcement-preview{width:min(1176px,calc(100% - 48px));margin-inline:auto}
-.announcement-banner{position:relative;display:block;overflow:hidden;padding:0}
+.home .announcement-preview{width:100%;margin-inline:auto}
+.announcement-banner{position:relative;display:block;overflow:hidden;width:calc(100% - 238px);margin-left:238px;padding:0}
 .announcement-track{display:grid;min-height:inherit}
 .announcement-slide{grid-area:1/1;display:flex;align-items:center;justify-content:center;text-align:center;padding:72px 110px;opacity:0;visibility:hidden;transition:opacity .45s ease;pointer-events:none}
 .announcement-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
 .announcement-slide h1{font-size:1.8rem;line-height:1.4;margin:0;color:#fff;font-weight:600}
 .announcement-slide a{text-decoration:underline}
-.carousel-controls{position:absolute;inset:auto 22px 20px;display:flex;align-items:center;justify-content:center;gap:10px;color:#fff}
+.carousel-controls{position:absolute;inset:0;color:#fff;pointer-events:none}
 .carousel-controls[hidden]{display:none}
-.carousel-button,.carousel-pause,.carousel-dot{border:1px solid #ffffff70;background:#ffffff16;color:#fff;backdrop-filter:blur(5px)}
-.carousel-button{width:38px;height:38px;border-radius:50%;font-size:1.55rem;line-height:1;padding:0 0 3px}
-.carousel-pause{min-height:38px;border-radius:999px;padding:6px 14px;font-size:.78rem}
-.carousel-dots{display:flex;align-items:center;gap:7px;padding:0 3px}
-.carousel-dot{width:9px;height:9px;border-radius:50%;padding:0}
-.carousel-dot[aria-current="true"]{background:#fff;transform:scale(1.2)}
+.carousel-button,.carousel-pause,.carousel-dot{border:1px solid #ffffff70;background:#ffffff16;color:#fff;backdrop-filter:blur(5px);pointer-events:auto}
+.carousel-button{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;font-size:1.8rem;line-height:1;padding:0 0 3px;transform:translateY(-50%)}
+.carousel-prev{left:18px}.carousel-next{right:18px}
+.carousel-button:disabled{opacity:.46;cursor:default}
+.carousel-pause{position:absolute;right:18px;bottom:18px;min-height:34px;border-radius:999px;padding:5px 12px;font-size:.76rem}
+.carousel-dots{position:absolute;left:50%;bottom:18px;display:flex;align-items:center;justify-content:center;gap:7px;transform:translateX(-50%)}
+.carousel-dot{min-width:28px;height:28px;border-radius:50%;padding:0 5px;font-size:.75rem;font-weight:700;line-height:1}
+.carousel-dot[aria-current="true"]{background:#fff;color:#194878}
 .carousel-button:hover,.carousel-pause:hover,.carousel-dot:hover{background:#ffffff30}
+.carousel-button:disabled:hover{background:#ffffff16}
+.carousel-dot[aria-current="true"]:hover{background:#fff}
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .announcement-preview{padding-top:34px;padding-bottom:72px}
 .announcement-preview .announcement-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-bottom:12px}
@@ -212,9 +216,11 @@ main.home,main.inner-page,main.section{padding-top:30px}
 @media screen and (min-width:641px) and (max-width:900px){
   .nav{grid-auto-rows:43px}
 }
+@media screen and (max-width:1136px){.announcement-banner{width:100%;margin-left:0}}
 @media screen and (max-width:640px){
+  .home.wrap{width:calc(100% - 38.4px)}
   main.home,main.inner-page,main.section{padding-top:20px}
-  .home .announcement-preview{width:calc(100% - 38.4px)}
+  .home .announcement-preview{width:100%}
   .nav{background:#e1eff9;border-radius:10px;padding:6px;box-shadow:0 12px 30px #183e601f}
   .nav>a,.nav-group>a{min-height:44px;padding:10px 14px;border-radius:6px}
   .submenu-toggle{min-height:44px}
@@ -222,9 +228,12 @@ main.home,main.inner-page,main.section{padding-top:30px}
   .more-toggle{min-height:44px}
   .submenu,.nav-group:last-child .submenu{background:#edf6fc;border-radius:7px;padding:4px}
   .submenu a{padding:9px 14px}
-  .announcement-slide{padding:54px 46px 76px}
+  .announcement-slide{padding:54px 58px 76px}
   .announcement-slide h1{font-size:1.45rem}
-  .carousel-controls{inset:auto 12px 14px}
+  .carousel-button{width:36px;height:36px;font-size:1.5rem}
+  .carousel-prev{left:8px}.carousel-next{right:8px}
+  .carousel-dots{bottom:12px}
+  .carousel-pause{right:8px;bottom:12px}
   .announcement-preview{padding-top:26px;padding-bottom:48px}
 }
 @media(prefers-reduced-motion:reduce){.announcement-slide{transition:none}}

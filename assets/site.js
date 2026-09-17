@@ -76,10 +76,12 @@ if(mapDialog&&mapTrigger){
 document.querySelectorAll('[data-carousel]').forEach(carousel=>{
   const slides=[...carousel.querySelectorAll('.announcement-slide')];
   const controls=carousel.querySelector('.carousel-controls');
-  if(slides.length<2){controls.hidden=true;return;}
+  if(!slides.length)return;
   const dots=carousel.querySelector('.carousel-dots');
   const status=carousel.querySelector('.carousel-status');
   const pauseButton=carousel.querySelector('.carousel-pause');
+  const previousButton=carousel.querySelector('.carousel-prev');
+  const nextButton=carousel.querySelector('.carousel-next');
   const english=document.documentElement.lang==='en';
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current=0;
@@ -90,6 +92,7 @@ document.querySelectorAll('[data-carousel]').forEach(carousel=>{
     const button=document.createElement('button');
     button.type='button';
     button.className='carousel-dot';
+    button.textContent=String(index+1);
     button.setAttribute('aria-label',english?`Show announcement ${index+1}`:`${index+1}. duyuruyu göster`);
     button.addEventListener('click',()=>show(index,true));
     dots.append(button);
@@ -106,21 +109,24 @@ document.querySelectorAll('[data-carousel]').forEach(carousel=>{
     if(announce)status.textContent=english?`Announcement ${current+1} of ${slides.length}`:`${slides.length} duyurudan ${current+1}. duyuru`;
     restart();
   }
-  function restart(){clearInterval(timer);if(!paused)timer=setInterval(()=>show(current+1),6500);}
+  function restart(){clearInterval(timer);if(slides.length>1&&!paused)timer=setInterval(()=>show(current+1),6500);}
   function setPaused(value){
     paused=value;
     pauseButton.textContent=paused?(english?'Play':'Oynat'):(english?'Pause':'Duraklat');
     pauseButton.setAttribute('aria-label',paused?(english?'Play slideshow':'Slayt gösterisini oynat'):(english?'Pause slideshow':'Slayt gösterisini duraklat'));
     restart();
   }
-  carousel.querySelector('.carousel-prev').addEventListener('click',()=>show(current-1,true));
-  carousel.querySelector('.carousel-next').addEventListener('click',()=>show(current+1,true));
+  previousButton.addEventListener('click',()=>show(current-1,true));
+  nextButton.addEventListener('click',()=>show(current+1,true));
   pauseButton.addEventListener('click',()=>setPaused(!paused));
   carousel.addEventListener('mouseenter',()=>clearInterval(timer));
   carousel.addEventListener('mouseleave',restart);
   carousel.addEventListener('focusin',()=>clearInterval(timer));
   carousel.addEventListener('focusout',event=>{if(!carousel.contains(event.relatedTarget))restart();});
   controls.hidden=false;
+  previousButton.disabled=slides.length<2;
+  nextButton.disabled=slides.length<2;
+  pauseButton.hidden=slides.length<2;
   show(0);
   setPaused(paused);
 });

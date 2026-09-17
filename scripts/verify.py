@@ -87,7 +87,7 @@ for path in OUT.rglob('*.html'):
     if path.name=='index.html':
         carousel=soup.select_one('[data-carousel]')
         if not carousel or len(carousel.select('.announcement-slide'))<1:errors.append(f'{path}: missing announcement carousel')
-        elif not carousel.select_one('.carousel-controls'):errors.append(f'{path}: missing carousel controls')
+        elif not all(carousel.select_one(selector) for selector in ('.carousel-controls','.carousel-prev','.carousel-next','.carousel-dots')):errors.append(f'{path}: missing carousel navigation')
         preview=soup.select_one('.announcement-preview')
         more=preview.select_one('.announcement-more') if preview else None
         expected_more='More' if language=='en' else 'Daha fazla göster'
