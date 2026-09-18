@@ -115,6 +115,7 @@ def add_languages(out,b):
 
     def english_article(slug,current):
         p=localized[slug]
+        if slug=='kisaca-dedak':return clean(p)
         if slug in ['iletisim','kurucu-kurul','akreditasyon-sürecinde-olan-kurumlar','galeri']:return current
         if slug=='akredite-edilen-programlar':return b['program_records'](p,lang='en')
         if slug=='sunumlar-ve-yayınlar':return b['presentation_table'](p,lang='en')

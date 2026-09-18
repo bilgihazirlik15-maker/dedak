@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260918-3'
+ASSET_VERSION='20260918-4'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -217,6 +217,7 @@ def presentation_table(p,lang='tr'):
 
 def content_for(p):
     s=p['slug']
+    if s=='kisaca-dedak':return clean_content(p)
     if s=='hakkinda':return '<p>DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.</p>'+cards(groups['Kurumsal'])+'<h2>Kurumsal belge</h2>'+resources(p)
     if s=='akreditasyon':return without_repeated_accreditation_heading(clean_content(p))+cards(groups['Akreditasyon'])
     if s=='belgeler':return '<p>Akreditasyon çalışmalarında kullanılan belgeler, kurumsal düzenlemeler ve başvuru formları.</p>'+cards(groups['Belgeler'])+'<h2>Akreditasyon için temel belgeler</h2>'+resources(by_slug['akreditasyon-süreci'])
