@@ -284,3 +284,9 @@ main.home,main.inner-page,main.section{padding-top:30px}
   .org-branch::before{top:44px;bottom:auto;left:-22px;width:22px;height:0;border-top:2px solid var(--org-line);border-left:0}
   .org-evaluators::before{height:14px}
 }
+
+.principles-page .page-title{min-height:0;margin-bottom:24px}
+.principles-page .prose .principle-heading{margin:22px 0 4px;font-size:1.3rem;font-weight:700;line-height:1.35}
+.principles-page .prose .principle-heading:first-child{margin-top:0}
+.principles-page .prose .values-list{margin:0 0 22px;padding-left:24px}
+.principles-page .prose .values-list li{margin:0;line-height:1.85}

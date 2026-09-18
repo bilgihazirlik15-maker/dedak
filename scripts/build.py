@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260918-5'
+ASSET_VERSION='20260918-6'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -99,6 +99,29 @@ def clean_content(p):
     html=str(soup)
     html=html.replace('17 Kasım 2025 Salı 19:00','17 Kasım 2026 Salı 19:00')
     return html
+
+def mission_values_content(html,lang='tr'):
+    soup=BeautifulSoup(html,'html.parser')
+    headings=('Mission','Purpose','Values') if lang=='en' else ('Misyon','Amaç','Değerler')
+    for paragraph in soup.find_all('p'):
+        if paragraph.get_text(' ',strip=True) not in headings:continue
+        paragraph.name='h2'
+        paragraph['class']=['principle-heading']
+        next_paragraph=paragraph.find_next_sibling('p')
+        if next_paragraph:
+            while next_paragraph.contents:
+                first=next_paragraph.contents[0]
+                if getattr(first,'name',None)=='br' or (getattr(first,'name',None) is None and not str(first).strip()):first.extract()
+                else:break
+    values_heading=next(h for h in soup.select('h2.principle-heading') if h.get_text(' ',strip=True)==headings[2])
+    value_paragraphs=values_heading.find_next_siblings('p')
+    values=[re.sub(r'^•\s*','',line.strip()) for p in value_paragraphs for line in p.get_text('\n',strip=True).splitlines() if line.strip()]
+    value_list=soup.new_tag('ul',attrs={'class':'values-list'})
+    for value in values:
+        item=soup.new_tag('li');item.string=value;value_list.append(item)
+    value_paragraphs[0].replace_with(value_list)
+    for paragraph in value_paragraphs[1:]:paragraph.decompose()
+    return str(soup)
 
 def without_repeated_accreditation_heading(html):
     soup=BeautifulSoup(html,'html.parser')
@@ -217,6 +240,7 @@ def presentation_table(p,lang='tr'):
 
 def content_for(p):
     s=p['slug']
+    if s=='amac-misyon-degerler':return mission_values_content(clean_content(p))
     if s=='kisaca-dedak':return clean_content(p)
     if s=='hakkinda':return '<p>DEDAK’ın kuruluşu, yönetimi, kalite yaklaşımı ve stratejik hedefleri.</p>'+cards(groups['Kurumsal'])+'<h2>Kurumsal belge</h2>'+resources(p)
     if s=='akreditasyon':return without_repeated_accreditation_heading(clean_content(p))+cards(groups['Akreditasyon'])
@@ -240,6 +264,7 @@ def inner(p):
     if p['slug']=='akredite-edilen-programlar':page_class='wrap inner-page programs-page'
     if p['slug']=='sunumlar-ve-yayınlar':page_class='wrap inner-page publications-page'
     if p['slug']=='organizasyon-semasi':page_class='wrap inner-page organization-page'
+    if p['slug']=='amac-misyon-degerler':page_class='wrap inner-page principles-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():

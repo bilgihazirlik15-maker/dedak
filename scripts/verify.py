@@ -57,6 +57,11 @@ for path in OUT.rglob('*.html'):
         if soup.select('main figure,main figcaption,main .help'):errors.append(f'{path}: old organization image or caption is still visible')
     if path.name=='kisaca-dedak.html':
         if soup.select('main .resource-list,main .resource,main .help'):errors.append(f'{path}: redundant document download or note is still visible')
+    if path.name=='amac-misyon-degerler.html':
+        headings=[heading.get_text(' ',strip=True) for heading in soup.select('main .principle-heading')]
+        expected=['Mission','Purpose','Values'] if language=='en' else ['Misyon','Amaç','Değerler']
+        if headings!=expected:errors.append(f'{path}: mission, purpose and values headings are incorrect')
+        if len(soup.select('main .values-list li'))!=11:errors.append(f'{path}: values must have eleven evenly spaced items')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:
