@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260918-2'
+ASSET_VERSION='20260918-3'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -188,7 +188,7 @@ def organization_chart(lang='tr'):
         first_lang,second_lang=('en','tr') if en else ('tr','en')
         return f'<div class="org-card org-card-{key}"><strong lang="{first_lang}">{esc(first)}</strong><small lang="{second_lang}">{esc(second)}</small></div>'
     title='DEDAK organization chart' if en else 'DEDAK organizasyon şeması'
-    return '<section class="org-chart" aria-label="'+title+'"><div class="org-root">'+card('assembly')+'</div><div class="org-tier-main"><div class="org-audit">'+card('audit')+'</div><div class="org-leadership">'+card('board')+'<div class="org-tier-middle"><div class="org-dak">'+card('dak')+'<div class="org-evaluators">'+card('evaluators')+'</div></div><div class="org-committees">'+card('committees')+'</div></div><div class="org-tier-bottom"><div>'+card('advisory')+'</div><div>'+card('enterprise')+'</div></div></div></div></section>'
+    return '<section class="org-chart" aria-label="'+title+'"><div class="org-root">'+card('assembly')+'</div><div class="org-tier-main"><div class="org-audit">'+card('audit')+'</div><div class="org-leadership">'+card('board')+'<div class="org-direct"><div class="org-branch org-dak">'+card('dak')+'<div class="org-evaluators">'+card('evaluators')+'</div></div><div class="org-branch org-committees">'+card('committees')+'</div><div class="org-branch org-advisory">'+card('advisory')+'</div><div class="org-branch org-enterprise">'+card('enterprise')+'</div></div></div></div></section>'
 
 def presentation_table(p,lang='tr'):
     en=lang=='en'

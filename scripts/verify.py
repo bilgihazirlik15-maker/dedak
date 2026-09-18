@@ -51,6 +51,9 @@ for path in OUT.rglob('*.html'):
         if len(rows)!=12 or len(soup.select('.publication-title-link'))!=11 or len(soup.select('.publication-unavailable'))!=1:errors.append(f'{path}: incomplete presentations table')
     if path.name=='organizasyon-semasi.html':
         if len(soup.select('.org-chart .org-card'))!=8:errors.append(f'{path}: organization chart must contain all eight units')
+        direct=soup.select('.org-leadership > .org-direct > .org-branch')
+        if [branch.select_one(':scope > .org-card')['class'][-1] for branch in direct]!=['org-card-dak','org-card-committees','org-card-advisory','org-card-enterprise']:errors.append(f'{path}: DAK, committees, advisory board and enterprise must report directly to the management board')
+        if len(soup.select('.org-dak > .org-evaluators > .org-card-evaluators'))!=1:errors.append(f'{path}: evaluation team must report to DAK')
         if soup.select('main figure,main figcaption,main .help'):errors.append(f'{path}: old organization image or caption is still visible')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
