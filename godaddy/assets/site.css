@@ -252,7 +252,7 @@ main.home,main.inner-page,main.section{padding-top:30px}
 .org-card strong{font-size:1.04rem;font-weight:700;line-height:1.38}
 .org-card small{display:block;margin-top:5px;color:#d5e9f6;font-size:.8rem;line-height:1.38}
 .org-root{position:relative;width:min(600px,100%);margin:0 auto 52px}
-.org-root::after{position:absolute;top:100%;left:50%;height:52px;border-left:2px solid var(--org-line);content:""}
+.org-root::after{position:absolute;top:100%;left:50%;height:26px;border-left:2px solid var(--org-line);content:""}
 .org-tier-main{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:30px;align-items:start}
 .org-tier-main::before{position:absolute;top:-26px;left:12.5%;width:calc(50% + 13px);border-top:2px solid var(--org-line);content:""}
 .org-audit,.org-leadership,.org-branch,.org-evaluators{position:relative}
