@@ -49,6 +49,9 @@ for path in OUT.rglob('*.html'):
         if soup.select('main h2,main h3,main h4'):errors.append(f'{path}: repeated presentations heading')
         rows=soup.select('.publication-table tbody tr')
         if len(rows)!=12 or len(soup.select('.publication-title-link'))!=11 or len(soup.select('.publication-unavailable'))!=1:errors.append(f'{path}: incomplete presentations table')
+    if path.name=='organizasyon-semasi.html':
+        if len(soup.select('.org-chart .org-card'))!=8:errors.append(f'{path}: organization chart must contain all eight units')
+        if soup.select('main figure,main figcaption,main .help'):errors.append(f'{path}: old organization image or caption is still visible')
     nav=soup.select_one('#navigation')
     if not nav:errors.append(f'{path.name}: missing shared navigation')
     else:

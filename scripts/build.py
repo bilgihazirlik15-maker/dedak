@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260917-5'
+ASSET_VERSION='20260918-1'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -170,6 +170,26 @@ def institutions_table():
     rows=''.join('<tr><td>'+esc(name)+'</td><td>Şubat / February '+str(year)+'</td></tr>' for name,year in institutions)
     return '<div class="institution-table-wrap"><table class="institution-table"><colgroup><col style="width:65%"><col style="width:35%"></colgroup><thead><tr><th scope="col">Akreditasyon Sürecinde Olan Kurumlar<br><span>Institutions in the Process of Accreditation</span></th><th scope="col">Süreç Başlangıç Tarihi<br><span>Beginning Date of Process</span></th></tr></thead><tbody>'+rows+'</tbody></table></div>'
 
+def organization_chart(lang='tr'):
+    en=lang=='en'
+    labels={
+        'assembly':('Dil Eğitimi Değerlendirme ve Akreditasyon Derneği (DEDAK) Genel Kurulu','The Association for Language Education, Evaluation and Accreditation (DEDAK) General Assembly'),
+        'audit':('DEDAK Denetim Kurulu','Auditing Board'),
+        'board':('DEDAK Yönetim Kurulu','Founding Committee'),
+        'dak':('Dil Eğitimi Akreditasyon Kurulu (DAK)','Language Education Accreditation Board (DAK)'),
+        'committees':('Komiteler','Committees'),
+        'evaluators':('DEDAK Değerlendirici Takımı','Program Evaluation Teams'),
+        'advisory':('Danışma Kurulu','Advisory Board'),
+        'enterprise':('İktisadi İşletme','Economic Enterprise'),
+    }
+    def card(key):
+        tr,english=labels[key]
+        first,second=(english,tr) if en else (tr,english)
+        first_lang,second_lang=('en','tr') if en else ('tr','en')
+        return f'<div class="org-card org-card-{key}"><strong lang="{first_lang}">{esc(first)}</strong><small lang="{second_lang}">{esc(second)}</small></div>'
+    title='DEDAK organization chart' if en else 'DEDAK organizasyon şeması'
+    return '<section class="org-chart" aria-label="'+title+'"><div class="org-root">'+card('assembly')+'</div><div class="org-tier-main"><div class="org-audit">'+card('audit')+'</div><div class="org-leadership">'+card('board')+'<div class="org-tier-middle"><div class="org-dak">'+card('dak')+'<div class="org-evaluators">'+card('evaluators')+'</div></div><div class="org-committees">'+card('committees')+'</div></div><div class="org-tier-bottom"><div>'+card('advisory')+'</div><div>'+card('enterprise')+'</div></div></div></div></section>'
+
 def presentation_table(p,lang='tr'):
     en=lang=='en'
     entries=BeautifulSoup(p.get('html',''),'html.parser').select('li')
@@ -204,19 +224,21 @@ def content_for(p):
     if s=='duyurular':return '<span class="eyebrow">2027 akreditasyon dönemi</span><h2>DEDAK akreditasyon başvuruları</h2><p>2027 başvuruları 2 Kasım – 1 Aralık 2026 tarihleri arasında kabul edilecektir.</p><p><a class="button" href="akreditasyon-basvurusu.html">Başvuru rehberini inceleyin</a></p>'+clean_content(p)+resources(p)
     if s=='kurucu-kurul':return committees()
     if s=='akredite-edilen-programlar':return program_records(p)
+    if s=='organizasyon-semasi':return organization_chart()
     if s=='sunumlar-ve-yayınlar':return presentation_table(p)
     if s=='iletisim':return contact()
     if s=='galeri':return '<div class="notice"><h2>DEDAK etkinlik arşivi</h2><p>Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.</p><a class="button" href="iletisim.html">İletişim</a></div>'
     if s in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return resources(p)
     if s=='akreditasyon-ücretleri':return '<div class="notice">2027 başvuruları için ücretlerin Kasım ayı başında güncellenmesi öngörülmektedir. Aşağıdaki mevcut ücret tablosunu başvuru öncesinde DEDAK ile teyit edin.</div>'+figures(p)+clean_content(p)
     if s=='akreditasyon-sürecinde-olan-kurumlar':return institutions_table()
-    if s in ['akredite-edilen-programlar','organizasyon-semasi']:return figures(p)+clean_content(p)
+    if s=='akredite-edilen-programlar':return figures(p)+clean_content(p)
     return clean_content(p)+figures(p)+resources(p)
 
 def inner(p):
     page_class='wrap inner-page institutions-page' if p['slug']=='akreditasyon-sürecinde-olan-kurumlar' else 'wrap inner-page'
     if p['slug']=='akredite-edilen-programlar':page_class='wrap inner-page programs-page'
     if p['slug']=='sunumlar-ve-yayınlar':page_class='wrap inner-page publications-page'
+    if p['slug']=='organizasyon-semasi':page_class='wrap inner-page organization-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():
