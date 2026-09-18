@@ -245,22 +245,22 @@ main.home,main.inner-page,main.section{padding-top:30px}
 @media print{main.home,main.inner-page,main.section{padding-top:0}}
 
 /* The organization chart is built from text so it stays sharp and lets the page color show through. */
-.organization-page{width:min(1380px,calc(100% - 48px));max-width:1380px}
+.organization-page{width:min(1176px,calc(100% - 48px));max-width:1176px}
 .organization-page .page-title{min-height:0;margin-bottom:20px}
 .org-chart{--org-line:#557e9f;padding:4px 0 30px;background:transparent}
-.org-card{position:relative;z-index:1;display:flex;min-height:104px;flex-direction:column;align-items:center;justify-content:center;padding:17px 23px;border:1px solid #5784a9;border-radius:14px;background:linear-gradient(145deg,#1d5684,#153b68);box-shadow:0 10px 23px #133c6320;color:#fff;text-align:center}
+.org-card{position:relative;z-index:1;display:flex;min-height:96px;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border:1px solid #5784a9;border-radius:14px;background:linear-gradient(145deg,#1d5684,#153b68);box-shadow:0 10px 23px #133c6320;color:#fff;text-align:center}
 .org-card strong{font-size:1.04rem;font-weight:700;line-height:1.38}
 .org-card small{display:block;margin-top:5px;color:#d5e9f6;font-size:.8rem;line-height:1.38}
-.org-root{position:relative;width:min(680px,100%);margin:0 auto 52px}
+.org-root{position:relative;width:min(600px,100%);margin:0 auto 52px}
 .org-root::after{position:absolute;top:100%;left:50%;height:52px;border-left:2px solid var(--org-line);content:""}
 .org-tier-main{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:30px;align-items:start}
-.org-tier-main::before{position:absolute;top:-26px;left:12.5%;width:50%;border-top:2px solid var(--org-line);content:""}
+.org-tier-main::before{position:absolute;top:-26px;left:12.5%;width:calc(50% + 13px);border-top:2px solid var(--org-line);content:""}
 .org-audit,.org-leadership,.org-dak,.org-committees,.org-evaluators,.org-tier-bottom>div{position:relative}
 .org-audit::before,.org-leadership::before{position:absolute;bottom:100%;left:50%;height:26px;border-left:2px solid var(--org-line);content:""}
 .org-leadership>.org-card{width:min(380px,100%);margin-inline:auto}
 .org-tier-middle{position:relative;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;margin-top:52px}
 .org-tier-middle::before,.org-tier-bottom::before{position:absolute;top:-26px;left:25%;width:50%;border-top:2px solid var(--org-line);content:""}
-.org-tier-middle::before{left:33.333%;width:50%}
+.org-tier-middle::before{left:calc(33.333% - 7px);width:calc(50% + 12px)}
 .org-leadership>.org-card::after{position:absolute;top:100%;left:50%;height:26px;border-left:2px solid var(--org-line);content:""}
 .org-dak::before,.org-committees::before,.org-tier-bottom>div::before{position:absolute;bottom:100%;left:50%;height:26px;border-left:2px solid var(--org-line);content:""}
 .org-evaluators{width:min(460px,100%);margin:46px auto 0}
