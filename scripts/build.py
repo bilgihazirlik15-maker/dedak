@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260919-1'
+ASSET_VERSION='20260919-3'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -246,7 +246,7 @@ def content_for(p):
     if s=='akreditasyon':return without_repeated_accreditation_heading(clean_content(p))+cards(groups['Akreditasyon'])
     if s=='belgeler':return '<p>Akreditasyon çalışmalarında kullanılan belgeler, kurumsal düzenlemeler ve başvuru formları.</p>'+cards(groups['Belgeler'])+'<h2>Akreditasyon için temel belgeler</h2>'+resources(by_slug['akreditasyon-süreci'])
     if s=='akreditasyon-başvurusu':return application()
-    if s=='duyurular':return '<span class="eyebrow">2027 akreditasyon dönemi</span><h2>DEDAK akreditasyon başvuruları</h2><p>2027 başvuruları 2 Kasım – 1 Aralık 2026 tarihleri arasında kabul edilecektir.</p><p><a class="button" href="akreditasyon-basvurusu.html">Başvuru rehberini inceleyin</a></p>'+clean_content(p)+resources(p)
+    if s=='duyurular':return '<span class="eyebrow">2027 akreditasyon dönemi</span><h2>DEDAK akreditasyon başvuruları</h2><p>2027 başvuruları 2 Kasım – 1 Aralık 2026 tarihleri arasında kabul edilecektir.</p><p><a class="button" href="akreditasyon-basvurusu.html">Başvuru rehberini inceleyin</a></p>'+clean_content(p)
     if s=='kurucu-kurul':return committees()
     if s=='akredite-edilen-programlar':return program_records(p)
     if s=='organizasyon-semasi':return organization_chart()
