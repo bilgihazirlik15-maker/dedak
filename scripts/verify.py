@@ -59,6 +59,8 @@ for path in OUT.rglob('*.html'):
         if soup.select('main .resource-list,main .resource,main .help'):errors.append(f'{path}: redundant document download or note is still visible')
     if path.name=='duyurular.html':
         if soup.select('main .resource-list,main .resource,main .help'):errors.append(f'{path}: announcement page must not show the application form download or source note')
+    if path.name=='dedak-paydas-tablosu.html':
+        if soup.select('main .resource-list,main .resource,main .help'):errors.append(f'{path}: stakeholder page must not show the duplicate PDF download or source note')
     if path.name=='amac-misyon-degerler.html':
         headings=[heading.get_text(' ',strip=True) for heading in soup.select('main .principle-heading')]
         expected=['Mission','Purpose','Values'] if language=='en' else ['Misyon','Amaç','Değerler']
