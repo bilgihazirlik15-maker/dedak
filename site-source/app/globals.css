@@ -329,6 +329,22 @@ main.home,main.inner-page,main.section{padding-top:30px}
 .fees-page .fees-table tbody tr:last-child>*{border-bottom:0}
 @media(max-width:640px){.fees-page .fees-table th,.fees-page .fees-table td{padding:14px}.fees-table thead th:first-child{width:64%}}
 
+.documents-page .page-title{min-height:0;margin-bottom:24px}
+.document-table-scroll{width:min(1080px,100%);margin:0 auto 24px;overflow-x:auto;border:1px solid #83c4d2;border-radius:14px;background:#fff;box-shadow:0 12px 32px #2e6fa018}
+.documents-page .document-table{display:table;width:100%;min-width:590px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.documents-page .document-table th,.documents-page .document-table td{padding:17px 18px;border:0;border-bottom:1px solid #d1ecef;vertical-align:middle;text-align:left;line-height:1.5}
+.documents-page .document-table thead th{background:#2f39a9;color:#fff;font-weight:700}
+.document-table thead th:first-child{width:64%}.document-table thead th:nth-child(2){width:12%}.document-table thead th:nth-child(3){width:12%}.document-table thead th:last-child{width:12%}
+.documents-page .document-table tbody th{font-weight:600}
+.document-table tbody th a{text-decoration:none}.document-table tbody th a:hover{text-decoration:underline}
+.document-table tbody tr:nth-child(even){background:#f4fbfc}.document-table tbody tr:hover{background:#e2f2f5}
+.documents-page .document-table tr:last-child>*{border-bottom:0}
+.document-kind{display:inline-block;background:#d9eef2;color:#2f39a9;padding:4px 7px;border-radius:6px;font-weight:700;font-size:.75rem!important}
+.document-open{display:inline-block;border:1px solid #83c4d2;border-radius:7px;padding:6px 12px;background:#fff;font-weight:700;text-decoration:none}
+.document-open:hover{background:#d9eef2}
+.document-table td{white-space:nowrap}
+@media(max-width:640px){.documents-page .document-table th,.documents-page .document-table td{padding:13px 12px}.document-table thead th:first-child{width:58%}.document-table thead th:last-child{width:18%}}
+
 /* 2026-09-19 palette: indigo, blue, cyan and turquoise. */
 :root{--navy:#2f39a9;--blue:#2e6fa0;--teal:#15d8b3;--ink:#20284d;--muted:#52647a;--line:#a9d4de;--soft:#e2f2f5;--page:#edf8fa;--menu:#d9eef2;--menu-hover:#bfe4ea;--menu-border:#83c4d2;background:var(--page)}
 body,.header,.skip{background:var(--page)}
