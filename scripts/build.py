@@ -290,7 +290,7 @@ def content_for(p):
     if s=='iletisim':return contact()
     if s=='galeri':return '<div class="notice"><h2>DEDAK etkinlik arşivi</h2><p>Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.</p><a class="button" href="iletisim.html">İletişim</a></div>'
     if s in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return resources(p)
-    if s=='akreditasyon-ücretleri':return '<div class="notice">2027 başvuruları için ücretlerin Kasım ayı başında güncellenmesi öngörülmektedir. Aşağıdaki mevcut ücret tablosunu başvuru öncesinde DEDAK ile teyit edin.</div>'+fee_table()+clean_content(p)
+    if s=='akreditasyon-ücretleri':return fee_table()+clean_content(p)
     if s=='akreditasyon-sürecinde-olan-kurumlar':return institutions_table()
     if s=='akredite-edilen-programlar':return figures(p)+clean_content(p)
     return clean_content(p)+figures(p)+resources(p)
