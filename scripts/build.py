@@ -7,7 +7,7 @@ from quality import quality_content
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260920-7'
+ASSET_VERSION='20260920-8'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -242,7 +242,7 @@ def presentation_table(p,lang='tr'):
 def document_table(p,lang='tr'):
     en=lang=='en'
     headings=('Document','Type','Size','Link') if en else ('Belge','Tür','Boyut','Bağlantı')
-    label='Accreditation process documents' if en else 'Akreditasyon süreci belgeleri'
+    label=('Directives' if en else 'Yönergeler') if p['slug']=='about-3-2' else ('Accreditation process documents' if en else 'Akreditasyon süreci belgeleri')
     html='<div class="document-table-scroll" role="region" aria-label="'+label+'" tabindex="0"><table class="document-table"><thead><tr>'+''.join('<th scope="col">'+h+'</th>' for h in headings)+'</tr></thead><tbody>'
     for a in BeautifulSoup(resources(p),'html.parser').select('a.resource'):
         href=esc(a['href']);name=esc(a.select_one('b').get_text(' ',strip=True))
@@ -271,7 +271,7 @@ def fee_table(lang='tr'):
 
 def content_for(p):
     s=p['slug']
-    if s=='akreditasyon-süreci':return document_table(p)
+    if s in ('akreditasyon-süreci','about-3-2'):return document_table(p)
     if s=='dedak-i-ç-kalite':return quality_content(clean_content(p))
     if s in ('dedak-paydaş-tablosu','stratejik-plan','akreditasyon-faaliyetleri-raporu'):return clean_content(p)
     if s=='amac-misyon-degerler':return mission_values_content(clean_content(p))
@@ -301,7 +301,7 @@ def inner(p):
     if p['slug']=='amac-misyon-degerler':page_class='wrap inner-page principles-page'
     if p['slug']=='dedak-i-ç-kalite':page_class='wrap inner-page quality-page'
     if p['slug']=='akreditasyon-ücretleri':page_class='wrap inner-page fees-page'
-    if p['slug']=='akreditasyon-süreci':page_class='wrap inner-page documents-page'
+    if p['slug'] in ('akreditasyon-süreci','about-3-2'):page_class='wrap inner-page documents-page'
     if p['slug']=='about-3-6':page_class='wrap inner-page certificate-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
