@@ -115,7 +115,7 @@ def add_languages(out,b):
 
     def english_article(slug,current):
         p=localized[slug]
-        if slug in ('akreditasyon-süreci','about-3-2'):return b['document_table'](p,'en')
+        if slug in ('akreditasyon-süreci','about-3-2','about-3-4'):return b['document_table'](p,'en')
         if slug=='dedak-i-ç-kalite':return b['quality_content'](clean(p),'en')
         if slug in ('dedak-paydaş-tablosu','stratejik-plan','akreditasyon-faaliyetleri-raporu'):return clean(p)
         if slug=='amac-misyon-degerler':return b['mission_values_content'](clean(p),'en')
