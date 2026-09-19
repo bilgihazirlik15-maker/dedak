@@ -77,7 +77,7 @@ cyprus_path = path({"type": "Polygon", "coordinates": cyprus_candidates[0]}, tol
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {HEIGHT}" aria-hidden="true">
 <!-- Province boundaries: OCHA/HDX COD-AB-TUR, CC BY-IGO, via {PROVINCES} -->
 <!-- Complete Cyprus island coastline: Natural Earth 1:10m land, public domain, {LAND} -->
-<g fill="#49A4BB" stroke="#fff" stroke-width="1.15" stroke-linejoin="round">
+<g fill="#457B9D" stroke="#fff" stroke-width="1.15" stroke-linejoin="round">
 {province_paths}
 <path id="cyprus-island" d="{cyprus_path}"/>
 </g>
