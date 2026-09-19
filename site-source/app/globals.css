@@ -291,50 +291,50 @@ main.home,main.inner-page,main.section{padding-top:30px}
 .principles-page .prose .values-list{margin:0 0 22px;padding-left:24px}
 .principles-page .prose .values-list li{margin:0;line-height:1.85}
 
-/* 2026-09-19 palette v2: burgundy, red, yellow and blue. */
-:root{--navy:#8b1e2d;--blue:#457b9d;--teal:#e63946;--ink:#3c2530;--muted:#67535a;--line:#e4c980;--soft:#fbefcc;--page:#fffaf0;--menu:#f8eadf;--menu-hover:#f7dfa3;--menu-border:#e0bd67;background:var(--page)}
+/* 2026-09-19 palette: indigo, blue, cyan and turquoise. */
+:root{--navy:#2f39a9;--blue:#2e6fa0;--teal:#15d8b3;--ink:#20284d;--muted:#52647a;--line:#a9d4de;--soft:#e2f2f5;--page:#edf8fa;--menu:#d9eef2;--menu-hover:#bfe4ea;--menu-border:#83c4d2;background:var(--page)}
 body,.header,.skip{background:var(--page)}
-a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#e63946}
-.page-title,.prose h2,.prose h3,.prose h4,.prose h5,.prose h6{color:#8b1e2d}
-.nav{background:var(--menu);border-color:var(--menu-border);box-shadow:0 5px 16px #8b1e2d14}
-.nav>a,.nav-group{border-right-color:#fffaf0}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline-color:#15d8b3}
+.page-title,.prose h2,.prose h3,.prose h4,.prose h5,.prose h6{color:#2f39a9}
+.nav{background:var(--menu);border-color:var(--menu-border);box-shadow:0 5px 16px #2e6fa014}
+.nav>a,.nav-group{border-right-color:#edf8fa}
 .nav a:hover,.nav button:hover{background:var(--menu-hover)}
-.nav a[aria-current=page],.nav .submenu-toggle[aria-current="true"],.nav .submenu-toggle[aria-expanded="true"],.nav>a.is-pending{background:#8b1e2d;color:#fff}
-.nav a[aria-current=page],.nav .submenu-toggle[aria-current="true"],.nav>a.is-pending{box-shadow:inset 0 -3px 0 #f4d35e}
-.submenu{background:#fff6e4;border-color:var(--menu-border);box-shadow:0 12px 28px #8b1e2d1f}
-.menu-toggle{border-color:#e0bd67;background:#f8eadf;color:#8b1e2d}
-.language-switch{border-color:#e0bd67;background:#f8eadf;box-shadow:inset 0 1px 2px #8b1e2d14,0 2px 7px #8b1e2d14}
-.language-switch a{color:#457b9d}
-.language-switch a.selected{background:linear-gradient(135deg,#8b1e2d,#e63946);color:#fff;box-shadow:0 1px 4px #8b1e2d4d}
-.language-switch a:hover:not(.selected){background:#f7dfa3;color:#8b1e2d}
-.announcement-banner{background:linear-gradient(135deg,#8b1e2d 0%,#e63946 58%,#457b9d 100%)}
-.carousel-dot[aria-current="true"]{color:#8b1e2d}
-.button{background:#8b1e2d;border-color:#8b1e2d}
-.button:hover{background:#e63946;border-color:#e63946}
-.notice,.resource>span:first-child{background:#fbefcc}
-.notice{border-left-color:#e63946}
-.resource:hover{background:#f9e8b7}
-.footer{background:#f7e3b1;border-color:#e0bd67}
-.institution-table-wrap,.program-table-wrap,.publication-table-wrap{border-color:#e0bd67;box-shadow:0 12px 32px #8b1e2d18}
-.institutions-page .institution-table th,.programs-page .program-table thead th,.publication-table thead th{background:#8b1e2d}
-.institutions-page .institution-table td,.programs-page .program-table tbody th,.programs-page .program-table tbody td,.publication-table tbody th,.publication-table tbody td{border-color:#f0dfac}
-.institutions-page .institution-table td+td,.programs-page .program-table tbody td,.publication-title-link,.publication-action,.map-inline-trigger,.programs-page .map-dialog-header h2,.programs-page .map-popup h3,.map-popup li a{color:#457b9d}
-.institutions-page .institution-table tbody tr:nth-child(even),.programs-page .program-table tbody tr:nth-child(even),.publication-table tbody tr:nth-child(even){background:#fffaf0}
-.institutions-page .institution-table tbody tr:hover,.programs-page .program-table tbody tr:hover,.publication-table tbody tr:hover{background:#fbefcc}
-.program-index,.publication-kind{background:#fbefcc;color:#8b1e2d}
-.publication-action{border-color:#e0bd67}
-.publication-action:hover{background:#fbefcc;border-color:#f4d35e}
-.university-map-dialog,.map-popup{border-color:#e0bd67;box-shadow:0 24px 70px #8b1e2d4a}
-.university-map-dialog::backdrop{background:#3c2530b8}
-.map-kicker{color:#457b9d}
-.map-dialog-close,.map-popup-close{background:#fbefcc;color:#8b1e2d}
-.map-dialog-close:hover,.map-popup-close:hover{background:#f7dfa3}
-.map-point{background:#8b1e2d;box-shadow:0 1px 5px #8b1e2d66}
-.map-point:hover,.map-point[aria-expanded="true"]{background:#f4d35e;box-shadow:0 0 0 3px #f4d35e66,0 2px 7px #8b1e2d4d}
-.map-point::after{color:#8b1e2d;box-shadow:0 2px 7px #457b9d26}
-.map-popup li{border-color:#f0dfac}
-.map-inline-trigger:hover,.map-popup li a:hover{color:#8b1e2d}
-.org-chart{--org-line:#457b9d}
-.org-card{border-color:#e63946;background:linear-gradient(145deg,#457b9d,#8b1e2d);box-shadow:0 10px 23px #8b1e2d26}
-.org-card small{color:#fff3cf}
-@media screen and (max-width:640px){.nav{background:#f8eadf;box-shadow:0 12px 30px #8b1e2d24}.submenu,.nav-group:last-child .submenu{background:#fff6e4}}
+.nav a[aria-current=page],.nav .submenu-toggle[aria-current="true"],.nav .submenu-toggle[aria-expanded="true"],.nav>a.is-pending{background:#2f39a9;color:#fff}
+.nav a[aria-current=page],.nav .submenu-toggle[aria-current="true"],.nav>a.is-pending{box-shadow:inset 0 -3px 0 #15d8b3}
+.submenu{background:#e8f5f7;border-color:var(--menu-border);box-shadow:0 12px 28px #2e6fa01f}
+.menu-toggle{border-color:#49a4bb;background:#d9eef2;color:#2f39a9}
+.language-switch{border-color:#83c4d2;background:#d9eef2;box-shadow:inset 0 1px 2px #2e6fa014,0 2px 7px #2e6fa014}
+.language-switch a{color:#2e6fa0}
+.language-switch a.selected{background:linear-gradient(135deg,#2f39a9,#2e6fa0);color:#fff;box-shadow:0 1px 4px #2f39a94d}
+.language-switch a:hover:not(.selected){background:#bfe4ea;color:#2f39a9}
+.announcement-banner{background:linear-gradient(135deg,#2f39a9 0%,#2e6fa0 68%,#49a4bb 100%)}
+.carousel-dot[aria-current="true"]{color:#2f39a9}
+.button{background:#2f39a9;border-color:#2f39a9}
+.button:hover{background:#2e6fa0;border-color:#2e6fa0}
+.notice,.resource>span:first-child{background:#d9eef2}
+.notice{border-left-color:#15d8b3}
+.resource:hover{background:#d1ecef}
+.footer{background:#cce9ee;border-color:#83c4d2}
+.institution-table-wrap,.program-table-wrap,.publication-table-wrap{border-color:#83c4d2;box-shadow:0 12px 32px #2e6fa018}
+.institutions-page .institution-table th,.programs-page .program-table thead th,.publication-table thead th{background:#2f39a9}
+.institutions-page .institution-table td,.programs-page .program-table tbody th,.programs-page .program-table tbody td,.publication-table tbody th,.publication-table tbody td{border-color:#d1ecef}
+.institutions-page .institution-table td+td,.programs-page .program-table tbody td,.publication-title-link,.publication-action,.map-inline-trigger,.programs-page .map-dialog-header h2,.programs-page .map-popup h3,.map-popup li a{color:#2e6fa0}
+.institutions-page .institution-table tbody tr:nth-child(even),.programs-page .program-table tbody tr:nth-child(even),.publication-table tbody tr:nth-child(even){background:#f4fbfc}
+.institutions-page .institution-table tbody tr:hover,.programs-page .program-table tbody tr:hover,.publication-table tbody tr:hover{background:#e2f2f5}
+.program-index,.publication-kind{background:#d9eef2;color:#2f39a9}
+.publication-action{border-color:#83c4d2}
+.publication-action:hover{background:#d9eef2;border-color:#49a4bb}
+.university-map-dialog,.map-popup{border-color:#83c4d2;box-shadow:0 24px 70px #2f39a94a}
+.university-map-dialog::backdrop{background:#20284db8}
+.map-kicker{color:#2e6fa0}
+.map-dialog-close,.map-popup-close{background:#d9eef2;color:#2f39a9}
+.map-dialog-close:hover,.map-popup-close:hover{background:#bfe4ea}
+.map-point{background:#2f39a9;box-shadow:0 1px 5px #2f39a966}
+.map-point:hover,.map-point[aria-expanded="true"]{background:#15d8b3;box-shadow:0 0 0 3px #15d8b366,0 2px 7px #2f39a94d}
+.map-point::after{color:#2f39a9;box-shadow:0 2px 7px #2e6fa026}
+.map-popup li{border-color:#d1ecef}
+.map-inline-trigger:hover,.map-popup li a:hover{color:#2f39a9}
+.org-chart{--org-line:#49a4bb}
+.org-card{border-color:#49a4bb;background:linear-gradient(145deg,#2e6fa0,#2f39a9);box-shadow:0 10px 23px #2f39a926}
+.org-card small{color:#dff6f8}
+@media screen and (max-width:640px){.nav{background:#d9eef2;box-shadow:0 12px 30px #2e6fa024}.submenu,.nav-group:last-child .submenu{background:#e8f5f7}}
