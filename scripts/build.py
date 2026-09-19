@@ -58,8 +58,9 @@ def header(active):
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
 def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, değerlendirme ölçütleri, başvuru bilgileri ve kurumsal belgeler.'):
+    committees_assets='<link rel="stylesheet" href="assets/committees.css">' if 'committees-table-wrap' in body else ''
     preview_assets='<link rel="stylesheet" href="assets/certificate-preview.css"><script src="assets/certificate-preview.js" defer></script>' if 'certificate-page' in body else ''
-    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#2F39A9"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script>{preview_assets}</head><body>{header(active)}{body}{footer()}</body></html>'
+    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#2F39A9"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script>{preview_assets}{committees_assets}</head><body>{header(active)}{body}{footer()}</body></html>'
 def homepage():
     text=clean_content(by_slug['duyurular'])
     first_paragraph=BeautifulSoup(text,'html.parser').find('p')
@@ -148,7 +149,15 @@ def committees():
         if t.isupper():
             current=[t,[]];sections.append(current)
         elif current:current[1].append(t)
-    return '<p>DEDAK kurul, komite ve komisyon üyeleri — 2026.</p>'+''.join('<section><h2>'+esc(h)+'</h2><ul>'+''.join('<li>'+esc(n)+'</li>' for n in names)+'</ul></section>' for h,names in sections)
+    table='<div class="committees-table-wrap" tabindex="0"><table class="committees-table"><thead><tr><th scope="col">Kurul / Komite</th><th scope="col">Üyeler ve görevleri</th></tr></thead>'
+    for heading,names in sections:
+        table+='<tbody>'
+        for index,name in enumerate(names):
+            table+='<tr>'
+            if index==0:table+='<th scope="rowgroup" rowspan="'+str(len(names))+'">'+esc(heading)+'</th>'
+            table+='<td>'+esc(name)+'</td></tr>'
+        table+='</tbody>'
+    return '<p>DEDAK kurul, komite ve komisyon üyeleri — 2026.</p>'+table+'</table></div>'
 
 def application():
     p=by_slug['akreditasyon-başvurusu']

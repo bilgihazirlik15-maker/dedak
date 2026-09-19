@@ -7,6 +7,7 @@ import json,re
 
 SOURCE_MAP={'about-3':'about-3-2','tuzuk':'about-3'}
 UI={
+ 'Kurul / Komite':'Board / Committee','Üyeler ve görevleri':'Members and roles',
  'Anasayfa':'Home','Ana Sayfa':'Home','Hakkında':'About','Kurumsal':'About DEDAK','Akreditasyon':'Accreditation','Üyelik':'Membership','Belgeler':'Documents','Sunumlar ve Yayınlar':'Presentations and Publications','Duyurular':'Announcements','Diğer':'More','Galeri':'Gallery','İletişim':'Contact','Site haritası':'Site map','Menü ☰':'Menu ☰','İçeriğe geç':'Skip to content','Ana menü':'Main navigation','DEDAK ana sayfa':'DEDAK home',
  'Duyuru slaytları':'Announcement slides','Önceki duyuru':'Previous announcement','Sonraki duyuru':'Next announcement','Duyuru seçimi':'Announcement selection','Slayt gösterisini duraklat':'Pause slideshow','Duraklat':'Pause',
  'DEDAK Akreditasyon Başvuruları':'DEDAK Accreditation Applications','DEDAK akreditasyon başvuruları':'DEDAK accreditation applications','2027 akreditasyon dönemi':'2027 accreditation cycle','Başvuru rehberini inceleyin':'Read the application guide','Kurumsal belge':'Institutional document','Akreditasyon için temel belgeler':'Essential accreditation documents',

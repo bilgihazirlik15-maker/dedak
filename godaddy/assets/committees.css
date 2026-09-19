@@ -1,0 +1,12 @@
+.committees-table-wrap{max-width:1080px;margin:24px auto 32px;border:1px solid #83c4d2;border-radius:16px;overflow:auto;background:#fff;box-shadow:0 12px 32px #2e6fa018}
+.prose .committees-table{display:table;width:100%;min-width:520px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.prose .committees-table th,.prose .committees-table td{padding:14px 22px;text-align:left;border:0;line-height:1.6}
+.prose .committees-table thead th{background:#2f39a9;color:#fff;font-size:1rem;font-weight:700;padding-block:18px}
+.committees-table thead th:first-child{width:38%}
+.prose .committees-table tbody th{background:#d9eef2;color:#2f39a9;vertical-align:top;font-size:.95rem;font-weight:700;border-right:1px solid #c7e5ec;padding-top:20px}
+.prose .committees-table tbody td{color:#234b70;border-bottom:1px solid #e0eef2;font-size:1rem}
+.committees-table tbody tr:nth-child(even) td{background:#f3fafb}
+.committees-table tbody tr:hover td{background:#e3f4f6}
+.prose .committees-table tbody+tbody tr:first-child>*{border-top:3px solid #83c4d2}
+.prose .committees-table tbody tr:last-child td{border-bottom:0}
+@media(max-width:640px){.prose .committees-table th,.prose .committees-table td{padding:12px 14px}.committees-table thead th:first-child{width:36%}}
