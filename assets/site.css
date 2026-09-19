@@ -392,3 +392,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .org-card{border-color:#49a4bb;background:linear-gradient(145deg,#2e6fa0,#2f39a9);box-shadow:0 10px 23px #2f39a926}
 .org-card small{color:#dff6f8}
 @media screen and (max-width:640px){.nav{background:#d9eef2;box-shadow:0 12px 30px #2e6fa024}.submenu,.nav-group:last-child .submenu{background:#e8f5f7}}
+
+/* Center the registration certificate in a responsive frame. */
+.certificate-page .prose figure{width:min(625px,100%);margin:26px auto;padding:clamp(10px,2vw,20px);border:1px solid #83c4d2;border-radius:14px;background:#d9eef2;box-shadow:0 12px 32px #2e6fa018}
+.certificate-page .prose figure a{display:block}
+.certificate-page .prose figure img{width:100%;height:auto;border:1px solid #b8dce4;border-radius:4px}
+.certificate-page .prose figcaption{text-align:center;margin-top:12px}

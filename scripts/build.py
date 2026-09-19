@@ -7,7 +7,7 @@ from quality import quality_content
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260920-6'
+ASSET_VERSION='20260920-7'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -302,6 +302,7 @@ def inner(p):
     if p['slug']=='dedak-i-ç-kalite':page_class='wrap inner-page quality-page'
     if p['slug']=='akreditasyon-ücretleri':page_class='wrap inner-page fees-page'
     if p['slug']=='akreditasyon-süreci':page_class='wrap inner-page documents-page'
+    if p['slug']=='about-3-6':page_class='wrap inner-page certificate-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():
