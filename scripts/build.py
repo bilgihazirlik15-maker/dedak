@@ -3,10 +3,11 @@ from urllib.parse import urlsplit, unquote, quote
 from html import escape
 import json,re,shutil
 from bs4 import BeautifulSoup
+from quality import quality_content
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260920-1'
+ASSET_VERSION='20260920-2'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -240,6 +241,7 @@ def presentation_table(p,lang='tr'):
 
 def content_for(p):
     s=p['slug']
+    if s=='dedak-i-ç-kalite':return quality_content(clean_content(p))
     if s=='dedak-paydaş-tablosu':return clean_content(p)
     if s=='amac-misyon-degerler':return mission_values_content(clean_content(p))
     if s=='kisaca-dedak':return clean_content(p)
@@ -266,6 +268,7 @@ def inner(p):
     if p['slug']=='sunumlar-ve-yayınlar':page_class='wrap inner-page publications-page'
     if p['slug']=='organizasyon-semasi':page_class='wrap inner-page organization-page'
     if p['slug']=='amac-misyon-degerler':page_class='wrap inner-page principles-page'
+    if p['slug']=='dedak-i-ç-kalite':page_class='wrap inner-page quality-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():

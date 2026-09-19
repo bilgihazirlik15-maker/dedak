@@ -115,6 +115,7 @@ def add_languages(out,b):
 
     def english_article(slug,current):
         p=localized[slug]
+        if slug=='dedak-i-ç-kalite':return b['quality_content'](clean(p),'en')
         if slug=='dedak-paydaş-tablosu':return clean(p)
         if slug=='amac-misyon-degerler':return b['mission_values_content'](clean(p),'en')
         if slug=='kisaca-dedak':return clean(p)
