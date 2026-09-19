@@ -7,7 +7,7 @@ from quality import quality_content
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'godaddy';OUT.mkdir(exist_ok=True)
-ASSET_VERSION='20260920-4'
+ASSET_VERSION='20260920-5'
 pages=[p for p in json.loads((ROOT/'content/pages.json').read_text(encoding='utf-8')) if 'error' not in p]
 assets=json.loads((ROOT/'content/assets.json').read_text(encoding='utf-8'))
 by_slug={p['slug']:p for p in pages}
@@ -239,6 +239,25 @@ def presentation_table(p,lang='tr'):
     summary=('<p class="publication-summary">12 records. Available files and web pages open in a new tab.</p>' if en else '<p class="publication-summary">12 kayıt. Mevcut dosyalar ve web sayfaları yeni sekmede açılır.</p>')
     return summary+'<div class="publication-table-wrap"><table class="publication-table"><thead><tr>'+headings+'</tr></thead><tbody>'+''.join(rows)+'</tbody></table></div>'
 
+def fee_table(lang='tr'):
+    en=lang=='en'
+    rows=[
+        ('Genel Değerlendirme (İlk defa akreditasyona başvuracaklar için)','General Evaluation (for first-time accreditation applicants)','248.710','248,710'),
+        ('Ziyaretle Ara Değerlendirme','Interim Evaluation with a Site Visit','198.170','198,170'),
+        ('Raporla Ara Değerlendirme','Interim Evaluation by Report','135.660','135,660'),
+        ('Ziyaretle Kanıt Göster','Evidence Submission with a Site Visit','198.170','198,170'),
+        ('Raporla Kanıt Göster','Evidence Submission by Report','135.660','135,660'),
+        ('Sustaining Fee (Sürdürülebilirlik Katkı Payı) (Yıllık)','Annual Sustaining Fee','19.900','19,900'),
+    ]
+    heading='2026 DEDAK Accreditation Evaluation Fees' if en else '2026 Dönemi DEDAK Akreditasyon Değerlendirme Ücretleri'
+    category='Evaluation Type' if en else 'Değerlendirme Türü'
+    amount='2026 Fee (TRY)' if en else '2026 Ücretlendirme (TL)'
+    note='Site visit expenses are included in the fee.' if en else 'Saha ziyareti masrafları ücretin içindedir.'
+    html=f'<section class="fees-section" aria-labelledby="fees-title"><h2 id="fees-title">{heading}</h2><p class="fees-note">{note}</p><div class="fees-table-scroll" role="region" aria-labelledby="fees-title" tabindex="0"><table class="fees-table"><thead><tr><th scope="col">{category}</th><th scope="col">{amount}</th></tr></thead><tbody>'
+    for tr,english,tr_fee,en_fee in rows:
+        html+='<tr><th scope="row">'+esc(english if en else tr)+'</th><td><strong>'+ (en_fee if en else tr_fee)+'</strong><span class="fees-tax">'+(' + VAT' if en else ' + KDV')+'</span></td></tr>'
+    return html+'</tbody></table></div></section>'
+
 def content_for(p):
     s=p['slug']
     if s=='dedak-i-ç-kalite':return quality_content(clean_content(p))
@@ -257,7 +276,7 @@ def content_for(p):
     if s=='iletisim':return contact()
     if s=='galeri':return '<div class="notice"><h2>DEDAK etkinlik arşivi</h2><p>Etkinlik fotoğrafları için DEDAK ile iletişime geçebilirsiniz.</p><a class="button" href="iletisim.html">İletişim</a></div>'
     if s in ['about-3','about-3-1','about-3-2','about-3-4','about-3-3','dedak-ölçütler','akreditasyon-süreci']:return resources(p)
-    if s=='akreditasyon-ücretleri':return '<div class="notice">2027 başvuruları için ücretlerin Kasım ayı başında güncellenmesi öngörülmektedir. Aşağıdaki mevcut ücret tablosunu başvuru öncesinde DEDAK ile teyit edin.</div>'+figures(p)+clean_content(p)
+    if s=='akreditasyon-ücretleri':return '<div class="notice">2027 başvuruları için ücretlerin Kasım ayı başında güncellenmesi öngörülmektedir. Aşağıdaki mevcut ücret tablosunu başvuru öncesinde DEDAK ile teyit edin.</div>'+fee_table()+clean_content(p)
     if s=='akreditasyon-sürecinde-olan-kurumlar':return institutions_table()
     if s=='akredite-edilen-programlar':return figures(p)+clean_content(p)
     return clean_content(p)+figures(p)+resources(p)
@@ -269,6 +288,7 @@ def inner(p):
     if p['slug']=='organizasyon-semasi':page_class='wrap inner-page organization-page'
     if p['slug']=='amac-misyon-degerler':page_class='wrap inner-page principles-page'
     if p['slug']=='dedak-i-ç-kalite':page_class='wrap inner-page quality-page'
+    if p['slug']=='akreditasyon-ücretleri':page_class='wrap inner-page fees-page'
     return '<main id="main" class="'+page_class+'"><h1 class="page-title">'+esc(title(p))+'</h1><article class="prose">'+content_for(p)+'</article></main>'
 
 def open_content_links_in_new_tabs():
