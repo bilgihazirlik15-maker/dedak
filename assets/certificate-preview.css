@@ -1,0 +1,8 @@
+.certificate-page figure a{cursor:zoom-in}
+.certificate-preview{width:min(940px,calc(100% - 24px));max-width:calc(100% - 24px);max-height:94vh;padding:0;border:1px solid #83c4d2;border-radius:14px;background:#edf8fa;color:#2f39a9;box-shadow:0 24px 70px #20284d70;overflow:hidden}
+.certificate-preview::backdrop{background:#162343bf;backdrop-filter:blur(3px)}
+.certificate-preview-bar{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;background:#d9eef2}
+.certificate-preview-bar button{border:1px solid #83c4d2;border-radius:8px;padding:8px 14px;background:#fff;color:#2f39a9;font:inherit;font-weight:600;cursor:pointer}
+.certificate-preview-image{max-height:calc(94vh - 76px);overflow:auto;padding:16px;overscroll-behavior:contain}
+.certificate-preview-image img{display:block;width:100%;max-width:none;height:auto;margin:auto;background:#fff}
+.certificate-preview-image.is-zoomed img{width:1400px;max-width:none}
