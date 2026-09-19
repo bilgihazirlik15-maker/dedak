@@ -58,7 +58,8 @@ def header(active):
 def footer():
     return '<footer class="footer"><div class="wrap"><p class="footer-email"><a href="mailto:info@dedak.org">info@dedak.org</a></p><div class="footer-bottom"><span>© 2026 DEDAK</span><a href="site-haritasi.html">Site haritası</a></div></div></footer>'
 def shell(t,body,active='index',description='DEDAK dil eğitimi akreditasyonu, değerlendirme ölçütleri, başvuru bilgileri ve kurumsal belgeler.'):
-    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#2F39A9"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script></head><body>{header(active)}{body}{footer()}</body></html>'
+    preview_assets='<link rel="stylesheet" href="assets/certificate-preview.css"><script src="assets/certificate-preview.js" defer></script>' if 'certificate-page' in body else ''
+    return f'<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#2F39A9"><title>{esc(t)} | DEDAK</title><meta name="description" content="{esc(description)}"><link rel="stylesheet" href="assets/site.css?v={ASSET_VERSION}"><script src="assets/site.js?v={ASSET_VERSION}" defer></script>{preview_assets}</head><body>{header(active)}{body}{footer()}</body></html>'
 def homepage():
     text=clean_content(by_slug['duyurular'])
     first_paragraph=BeautifulSoup(text,'html.parser').find('p')
